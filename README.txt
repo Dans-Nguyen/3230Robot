@@ -1,19 +1,23 @@
-REQUIRED LIBRARIES
+## Required Libraries
 
-Install these libraries through Arduino IDE → Tools → Manage Libraries
+Install these libraries using Arduino IDE → Tools → Manage Libraries:
+
 - Servo
 - QTRSensors
 
-This repository also includes custom libraries provided for by the 3230 
-class in the libraries folder.
+This repository also contains custom libraries provided by the ME 3230
+course. They are located in the `libraries\` folder.
 
-To make Arduino IDE find the custom libraries:
-1. In Arduino IDE, open File → Preferences
-2. Set Sketchbook location to the local folder where you cloned this 
-   repository. For example:
-   C:\Users\<username>\Documents\GitHub\3230Robot
-3. Click OK, then completely close and reopen Arduino IDE.
+To allow Arduino IDE to find the custom libraries:
 
-Arduino IDE will then search for custom libraries inside
-3230Robot\Libraries
+1. Clone this repository to your computer.
+2. In Arduino IDE, open File → Preferences.
+3. Set **Sketchbook location** to the local folder containing this repository.
+   For example:
 
+   `C:\Users\<username>\Documents\GitHub\3230Robot`
+
+4. Click OK, then close and reopen Arduino IDE.
+
+Arduino IDE will then search the repository’s `libraries\` folder for the
+custom course libraries.
