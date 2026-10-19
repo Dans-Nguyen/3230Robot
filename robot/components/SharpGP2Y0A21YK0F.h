@@ -14,13 +14,11 @@ SharpGP2Y0A21YK0F distSensorF(A4, 0.2);    // Pin A4. alpha = 0.2
 distSensorF.begin();
 
 // In loop
-distSensorF.update();     // Get a reading from distance sensor
 float distCm = distSensorF.getDistCm();  // Get distance in cm
-float distIn = distSensorF.getDistIn();  // Get distance in in
 
 */
 
-#ifndef SharpGP2Y0A21YK0F_H
+#ifndef SharpGP2Y0A2c:\Users\dansn\Documents\GitHub\3230Robot\robot\components\QTRMD08RC.h1YK0F_H
 #define SharpGP2Y0A21YK0F_H
 
 class SharpGP2Y0A21YK0F {
@@ -58,8 +56,9 @@ class SharpGP2Y0A21YK0F {
       _alpha = constrain(alpha, 0.0f, 1.0f);
     }
 
-    // Get a reading from dist sensor and filter using IIR
-    void update() {
+    // Get a reading from dist sensor, filter using IIR, 
+    // and convert filtered voltage to distance
+    float getDistCm() {
       // Read raw voltage
       _rawADC = analogRead(_pin);
 
@@ -71,16 +70,8 @@ class SharpGP2Y0A21YK0F {
 
       // Convert voltage to distance
       _distCm = exp((log(voltage) - 2.851f) / -0.8776f);
-    }
 
-    // Return distance in cm
-    float getDistCm() const {
-      return _distCm;
-    }
-
-    // Return distance in in
-    float getDistIn() const {
-      return _distCm / 2.54f;
+      return _distCm
     }
 
 };
