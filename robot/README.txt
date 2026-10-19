@@ -8,5 +8,5 @@ This folder contains the Arduino code for the competition robot.
 
 ## Folders
 
-- `components/` — Classes and code for individual robot components.
+- `components/` — Classes and code for individual robot motors and sensors.
 - `automation/` — Classes and code for automated robot tasks.
