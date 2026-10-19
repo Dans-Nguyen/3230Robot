@@ -43,7 +43,7 @@ class SharpGP2Y0A21YK0F {
 
       // Start the filter at the first reading—no ramp from zero.
       _filteredVolt = _rawVolt;
-      _distCm = voltToDistCm(_filteredVolt);
+      _distCm = 0;
     }
 
     // Convert raw ADC to voltage
@@ -69,9 +69,9 @@ class SharpGP2Y0A21YK0F {
       _filteredVolt = _alpha * _rawVolt + (1.0f - _alpha) * _filteredVolt;
 
       // Convert voltage to distance
-      _distCm = exp((log(voltage) - 2.851f) / -0.8776f);
+      _distCm = exp((log(_filteredVolt) - 2.851f) / -0.8776f);
 
-      return _distCm
+      return _distCm;
     }
 
 };
