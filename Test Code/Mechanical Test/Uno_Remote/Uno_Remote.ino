@@ -44,7 +44,6 @@ void loop() {
 
   // Did user type something into laptop?
   if (Serial.available() > 0) {
-
     char command = Serial.read();
 
     // Send starting flag val
