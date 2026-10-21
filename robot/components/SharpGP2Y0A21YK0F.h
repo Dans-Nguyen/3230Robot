@@ -18,19 +18,10 @@ float distCm = distSensorF.getDistCm();  // Get distance in cm
 
 */
 
-#ifndef SharpGP2Y0A2c:\Users\dansn\Documents\GitHub\3230Robot\robot\components\QTRMD08RC.h1YK0F_H
+#ifndef SharpGP2Y0A21YK0F_H
 #define SharpGP2Y0A21YK0F_H
 
 class SharpGP2Y0A21YK0F {
-  private:
-    uint8_t _pin;
-    float _alpha;
-
-    int _rawADC;
-    float _rawVolt;
-    float _filteredVolt;
-    float _distCm;
-
   public:
     SharpGP2Y0A21YK0F(uint8_t sensorPin, float alpha = 0.1f)
     : _pin(sensorPin), _alpha(constrain(alpha, 0.0f, 1.0f)),
@@ -74,6 +65,14 @@ class SharpGP2Y0A21YK0F {
       return _distCm;
     }
 
+  private:
+      uint8_t _pin;
+      float _alpha;
+
+      int _rawADC;
+      float _rawVolt;
+      float _filteredVolt;
+      float _distCm;
 };
 
 #endif

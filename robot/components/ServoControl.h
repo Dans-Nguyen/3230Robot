@@ -19,34 +19,34 @@ angle = leverServo.getAngle();     // Gets current angle
 */
 
 #ifndef SERVO_CONTROL_H
-#define SERVO_CONTROL_Hc:\Users\dansn\Documents\GitHub\3230Robot\robot\components\SharpGP2Y0A21YK0F.h
+#define SERVO_CONTROL_H
 
 #include <Servo.h>
 
 class ServoControl {
-private:
-  Servo servo;
-  int _pin;
-  int _angle;
+  public:
+    // Set servo pin and initial angle in the constructor
+    ServoControl(int servoPin, int initAngle) : _pin(servoPin), _angle(constrain(initAngle, 0, 180)) {}
 
-public:
-  // Set servo pin and initial angle in the constructor
-  ServoControl(int servoPin, int initAngle) : _pin(servoPin), _angle(constrain(initAngle, 0, 180)) {}
+    // initialize servo
+    void begin() {
+      servo.attach(_pin);
+      servo.write(_angle);
+    }
 
-  // initialize servo
-  void begin() {
-    servo.attach(_pin);
-    servo.write(_angle);
-  }
+    void setAngle(int newAngle) {
+      _angle = constrain(newAngle, 0, 180);
+      servo.write(_angle);
+    }
 
-  void setAngle(int newAngle) {
-    _angle = constrain(newAngle, 0, 180);
-    servo.write(_angle);
-  }
+    int getAngle() const {
+      return _angle;
+    }
 
-  int getAngle() const {
-    return _angle;
-  }
+  private:
+    Servo servo;
+    int _pin;
+    int _angle;
 };
 
 #endif
