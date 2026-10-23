@@ -23,11 +23,11 @@ colorSensor.begin ();
 
 */
 
-#indef MD_TCS230_H
-#define MD_TCS230_H
+#indef MD_TCS3200_H
+#define MD_TCS3200_H
 // include <Arduino.h>
-// incldue <MD_TCS230.h>
-class MD_TCS230 {
+// include <MD_TCS3200.h>
+class MD_TCS3200 {
 public:
   // sets up our sensor pins
   MD_TCS3200(uint8_t sensorPin s0Pin, uint8_t sensorPin s1Pin, uint8_t sensorPin s2Pin, uint8_t sensorPin S3pin,
@@ -35,57 +35,76 @@ public:
 
   // get inital reading
 
-  void begin() {
+  void begin() {  // what do we put here ?
+    pinMode(s0, OUTPUT);
+    pinMode(s1, OUTPUT);
+    pinMode(s2, OUTPUT);
+    pinMode(s3, OUTPUT);
+    pinMode(readPin, INPUT);
+    pinMode(LEDPin, OUTPUT);
+    digitalWrite(s0, HIGH);  // s1 and s0 choose frequency scaling
+    digitalWrite(s1, LOW);
 
-    }
-    
-    // Start the color sensor at zero
-    //_colorFreq = 0;
-  
-  // This is it's own section seperate ---- takes readings from the sensor
-  //Blue Filter lab code
-  void readColors() {
-    digitalWrite(s2, LOW);
-    digitalWrite(s3, HIGH);
-
-    for (int i = 0; i < numSamples; i++) {
-      B[i] = readPulse();
-    }
-    //Red Filter
-    digitalWrite(s2, LOW);
-    digitalWrite(s3, LOW);
-    
-    for (int i = 0; i < numSamples; i++) {
-      R[i] = readPulse();
-    }
-    //Green Filter
-    digitalWrite(s2, HIGH);
-    digitalWrite(s3, HIGH);
-    
-    for (int i = 0; i < numSamples; i++) {
-      G[i] = readPulse();
-    }
-    // CLEAR Filter
-    digitalWrite(s2, HIGH);
-    digitalWrite(s3, LOW);
-    
-    for (int i = 0; i < numSamples; i++) {
-      C[i] = readPulse();
-    }
+    digitalWrite(LEDPin, HIGH);  //turn on LED
+    Serial.println("Type in anything to the serial monitor to get a values");
+    Serial.println("Red\t\tGreen\t\tBlue\t\tClear");
   }
 
+
+
+// Start the color sensor at zero
+//_colorFreq = 0;
+
+// This is it's own section seperate ---- takes readings from the sensor
+//Blue Filter lab code
+void readColors() {
+  digitalWrite(s2, LOW);
+  digitalWrite(s3, HIGH);
+
+  for (int i = 0; i < numSamples; i++) {
+    B[i] = readPulse();
+  }
+  //Red Filter
+  digitalWrite(s2, LOW);
+  digitalWrite(s3, LOW);
+
+  for (int i = 0; i < numSamples; i++) {
+    R[i] = readPulse();
+  }
+  //Green Filter
+  digitalWrite(s2, HIGH);
+  digitalWrite(s3, HIGH);
+
+  for (int i = 0; i < numSamples; i++) {
+    G[i] = readPulse();
+  }
+  // CLEAR Filter
+  digitalWrite(s2, HIGH);
+  digitalWrite(s3, LOW);
+
+  for (int i = 0; i < numSamples; i++) {
+    C[i] = readPulse();
+  }
+} // void ReadColors 
+void movingAverage (float * arr) {
+float sum = 0;
+for (int i = 0; < numSamples; i++) {
+  sum += arr[i]/numSamples;
+}
+return sum;
 }
 
-private :
-  // Sensor pin variable
+
+private:
+// Sensor pin variable
 uint8_t _s0;
 uint8_t _s1;
 uint8_t _s2;
 uint8_t _s3;
-uint8_t _readPin;
-uint8_t _ledPin;
+uint8_t _readPin;  // OUT?
+uint8_t _LEDPin;   // OE ?
 
-//float _colorFreq; 
+//float _colorFreq;
 float _R;
 float _G;
 float _B;
@@ -96,7 +115,8 @@ float _GF;
 float _BF;
 float _CF;
 
-const int _numSamples; I 
+const int _numSamples;
+I
 }
 ;
 
