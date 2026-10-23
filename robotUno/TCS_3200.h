@@ -87,11 +87,45 @@ void readColors() {
   }
 } // void ReadColors 
 void movingAverage (float * arr) {
-float sum = 0;
+float blockColor_sum = 0;
 for (int i = 0; < numSamples; i++) {
-  sum += arr[i]/numSamples;
+  blockColor_sum += arr[i]/numSamples;
 }
-return sum;
+return blockColorsum;
+}
+
+void blockColors () {
+// Algorithm for deciding what color a block is
+// Blue filter, red filter, green filter in order... Normalized sensor range 
+// Blue block is colors [49.1,55.66], [14.84,19.6], [30.4,31.46]
+// Red block is [21.51,21.88], [55.68,58.82], [16.94,18.35]
+// Yellow block is [21.46,23.08], [36.72,39.06], [35,37.94]
+// Brown block is [ ]
+// Decide if we want block or if we want to push block based on what color is read (within range)
+if (blockColorSum){
+  // Red block
+  blockColor = red;
+  
+  
+  else if {
+    // blue block 
+blockColor = blue;
+  }
+  
+  
+  else if {
+    // yellow block 
+blockColor = yellow;
+  }
+  else{
+    // brown block
+blockColor = brown;
+  }
+  
+
+
+}
+
 }
 
 
@@ -110,13 +144,14 @@ float _G;
 float _B;
 float _C;
 
+// Filtered values
 float _RF;
 float _GF;
 float _BF;
 float _CF;
 
 const int _numSamples;
-I
+
 }
 ;
 
