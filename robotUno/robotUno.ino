@@ -1,10 +1,9 @@
 // Compoents On Uno 
 // Hall Effect and TCS3200 Color Sensor
 //#include "components\TCS3200.h"
+//#include "components\Hall_Effect.h"
 
-// Automation
-//#include "automation\ColorSense.h"
-//#include "automation\MagnetDetection.h"
+
 
 #include <SoftwareSerial.h>
 SoftwareSerial UnoXbee(2, 3);  // RX, TX
