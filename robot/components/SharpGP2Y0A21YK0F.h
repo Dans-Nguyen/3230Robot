@@ -25,12 +25,12 @@ class SharpGP2Y0A21YK0F {
   public:
     SharpGP2Y0A21YK0F(uint8_t sensorPin, float alpha = 0.1f)
     : _pin(sensorPin), _alpha(constrain(alpha, 0.0f, 1.0f)),
-    _rawADC(0), _rawVolt(0.0f), _filteredVolt(0.0f), _distCm(0.0f) {}
+    _rawVal(0), _rawVolt(0.0f), _filteredVolt(0.0f), _distCm(0.0f) {}
 
     // Get initial reading
     void begin() {
-      _rawADC = analogRead(_pin);
-      _rawVolt = adcToVoltRaw(_rawADC);
+      _rawVal = analogRead(_pin);
+      _rawVolt = adcToVoltRaw(_rawVal);
 
       // Start the filter at the first reading—no ramp from zero.
       _filteredVolt = _rawVolt;
@@ -39,7 +39,7 @@ class SharpGP2Y0A21YK0F {
 
     // Convert raw ADC to voltage
     float adcToVoltRaw(int rawADC) const {
-      return rawADC * (5.0 / 1023.0f);
+      return rawADC * (5.0f / 1023.0f);
     }
 
     // Set IIR filter weight
@@ -51,10 +51,10 @@ class SharpGP2Y0A21YK0F {
     // and convert filtered voltage to distance
     float getDistCm() {
       // Read raw voltage
-      _rawADC = analogRead(_pin);
+      _rawVal = analogRead(_pin);
 
       // Convert raw ADC to raw voltage
-      _rawVolt = adcToVoltRaw(_rawADC);
+      _rawVolt = adcToVoltRaw(_rawVal);
 
       // Filter voltage
       _filteredVolt = _alpha * _rawVolt + (1.0f - _alpha) * _filteredVolt;
@@ -69,7 +69,7 @@ class SharpGP2Y0A21YK0F {
       uint8_t _pin;
       float _alpha;
 
-      int _rawADC;
+      int _rawVal;
       float _rawVolt;
       float _filteredVolt;
       float _distCm;
