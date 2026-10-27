@@ -1,16 +1,22 @@
 // Component classes
 #include "components\SharpGP2Y0A21YK0F.h"
 #include "components\QTRMD08RC.h"
+#include "components\MD_TCS_3200.h"
+#include "components\Hall_Effect.h"
 
 // Automation classes
 #include "automation\DriveControl.h"
 #include "automation\LineFollow.h"
+#include "automation\DetectBlock.h"
 
 DriveControl drive;
 SharpGP2Y0A21YK0F distSensorF(A4, 0.2);
 SharpGP2Y0A21YK0F distSensorR(A5, 0.2);
 QTRMD08RC lineSensor({37, 36, 39, 38, 41, 40, 43, 42});
 LineFollow lineFollow(lineSensor, drive);
+MD_TCS3200 colorSensor(27, 28, 29, 30, 31, 26);
+Hall_Effect hallEffect(A2);
+DetectBlock detectBlock(colorSensor, hallEffect);
 
 double t, t0, time=0; // declare some time variables
 
@@ -24,9 +30,11 @@ void setup() {
   Serial.begin(57600);      // for Serial Monitor messages
   Serial2.begin(115200);    // communication with the XBee / Uno
 
+  // begin componenet objects
   drive.begin();
   distSensorF.begin();
   lineSensor.begin();
+  colorSensor.begin();
 
   t0 = micros()/1000000.; // initialize time in seconds
 }
@@ -41,6 +49,22 @@ void loop() {
     Serial.println(state);
   }
 
+  // Set state directly from serial monitor. For debuggin purposes
+  if (Serial.available() > 0) {
+    int requestedState = Serial.parseInt();
+
+    if (requestedState != 0) {
+      state = requestedState;
+
+      Serial.print(F("State set to: "));
+      Serial.println(state);
+    }
+
+    // Remove the newline / carriage-return left by Serial Monitor.
+    while (Serial.available() > 0) {
+      Serial.read();
+    }
+  }
 
   switch (state) {
 
@@ -55,7 +79,7 @@ void loop() {
         drive.stop();
         state = 2;
       }
-      break;
+    break;
 
     case 2: // state for turning 90 degrees
       drive.turnCCW(100);
@@ -83,6 +107,13 @@ void loop() {
     
     // if count from line counting = 2
     // state = 5;
+    break;
+
+    // 123th state for debuggin purposes
+    case 123:
+      detectBlock.update()
+      char blockColor = detectBlock.getColor();
+      bool isMagnet = detectBlock.isMagnet();
     break;
   
   }
