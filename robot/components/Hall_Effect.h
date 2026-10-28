@@ -21,6 +21,8 @@ public:
   float getVal() {
     // quiescent value is 2.5V
     
+    _rawVal = analogRead(_pin);
+
     // Convert to voltage
     _Volt = _rawVal * (5.0f / 1023.0f);
 

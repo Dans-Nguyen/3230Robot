@@ -23,11 +23,11 @@ public:
   }
 
   char getColor () {
-    return _blockColor
+    return _blockColor;
   }
 
   bool isMagnet () {
-    return _isMagnet
+    return _isMagnet;
   }
 
 private:
