@@ -1,6 +1,6 @@
 /* IR Phototransistor class for LTR_4206E sensor
 
-Pin A3
+Pin 25
 */
 
 #ifndef LTR_4206E_IR_H
@@ -17,7 +17,7 @@ class LTR_4206E_IR {
 
   // initialize sensor
   void begin() {
-    pinMode(_pin, INPUT_PULLUP)
+    pinMode(_pin, INPUT_PULLUP);
   }
   // create functions
 
@@ -27,28 +27,15 @@ class LTR_4206E_IR {
   }
 
   //read the sensor
-  foat getFrequency() {
+  float getFrequency() {
 
-    //measure the high and low. then check the the pulses were detected
+    _pulseTime = pulseIn(_pin, LOW, _timeout) + pulseIn(_pin, HIGH, _timeout);
 
-    //Measuring the low pulse time
-    _lowTime = pulseIn(_pin, LOW, _timeout);
-    //Measuring the high pulse time
-    _highTime = pulseIn(_pin, HIGH, _timeout);
-
-    //check valid pulses 
-    // if high pulse time is = 0 or low pulse time is = 0
-    if (_highTime == 0 || _lowTime == 0) {
-          _frequency = 0.0f;
-          return _frequency;
-
-  }
-
-  // signal period calculations (in microseconds)
-  unsigned long period = _highTime + _lowTime;
-
-    // change period to frequency (in Hz)
-    _frequency = 1000000.0f / period;
+    if (_pulseTime > 0) {
+      _frequency = 1 / (float(_pulseTime)) * 1000000.0;
+    } else {
+      _frequency = 0;
+    }
 
     return _frequency;
   }
@@ -61,6 +48,7 @@ private:
   unsigned long _lowTime;
 
   float _frequency;
+  long _pulseTime;
 
 };
 
