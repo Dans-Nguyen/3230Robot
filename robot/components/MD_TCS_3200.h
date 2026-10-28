@@ -89,7 +89,7 @@ public:
     // Serial.print(",\t");
     // Serial.println(_Cf, 2);
 
-    if (_Cf <= 0) {
+    if (_Cf <= 0 || _Cf >= 100) {
       _blockColor = 'N';   // invalid/no reading
       return;
     }
@@ -129,7 +129,7 @@ public:
     } else {
       // brown block
       _blockColor = 'K';
-    }
+    } 
 
     
 

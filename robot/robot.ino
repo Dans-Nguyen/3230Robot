@@ -125,19 +125,32 @@ void loop() {
 
     // 120th state for testing order reception
     case 120:{
+      float frequency = IR.getFrequency();
+      Serial.println(frequency);
       if (order.update()) {
         activeOrderCount = order.count();
-
+        
         // A complete start → colors → end message was received.
         for (uint8_t i = 0; i < order.count(); i++) {
           activeOrder[i] = order.block(i); // store block color to activeOrder
+          //Serial.println(activeOrder[i]);
+          if(activeOrder[i] == 1){
+            Serial.println("RED");
+          } else if(activeOrder[i] == 2){
+            Serial.println("Yellow");
+          } else if(activeOrder[i] == 3){
+            Serial.println("BLUE");
+          } else if(activeOrder[i] == 4){
+            Serial.println("BROWN");
+          } 
 
-          Serial.println(activeORder[i])
 
         }
+
+        state = 999;
       }
 
-      state = 999;
+      
     break;}
 
     // 121st state for testing block detection
