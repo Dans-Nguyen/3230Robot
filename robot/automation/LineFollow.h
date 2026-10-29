@@ -5,12 +5,12 @@ class LineFollow {
 public:
 
   LineFollow(QTRMD08RC& sensor, DriveControl& driveControl)
-    : _lineSensor(sensor), _drive(driveControl) {}
+    : lineSensor(sensor), drive(driveControl) {}
 
   void start(int baseSpeed, float Kp) {
     // update and get values from reflectance sensor
-    _lineSensor.update();
-    _lineSensor.getValues(_sensorVal);
+    lineSensor.update();
+    lineSensor.getValues(_sensorVal);
 
     float num = 0.0f;
     float den = 0.0f;
@@ -22,7 +22,7 @@ public:
 
     // No reliable line detection: stop rather than divide by zero.
     if (den <= 0.0f) {
-      _drive.stop();
+      drive.stop();
       return;
     }
 
@@ -32,16 +32,16 @@ public:
     int m1c = (int)(baseSpeed + Kp * error);
     int m2c = (int)(baseSpeed - Kp * error);
 
-    _drive.setSpeeds(m1c, m2c);
+    drive.setSpeeds(m1c, m2c);
   }
 
   void stop() {
-    _drive.stop();
+    drive.stop();
   }
 
 private:
-  QTRMD08RC& _lineSensor;
-  DriveControl& _drive;
+  QTRMD08RC& lineSensor;
+  DriveControl& drive;
 
   uint16_t _sensorVal[QTRMD08RC::SensorCount] = {};
 
