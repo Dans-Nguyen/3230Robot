@@ -71,8 +71,8 @@ void loop() {
 
     // Did user type something into laptop?
     command = Serial.read();
-    if (command == 'S') {
-      Serial.read();
+    if (command == 'S') {      // do we need state = 1? 
+    Serial.read();
       state = 1;
       // Send starting flag val
       UnoXbee.write(255);
