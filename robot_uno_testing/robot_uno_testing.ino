@@ -1,14 +1,29 @@
 // Compoents On Uno - Hall Effect, Color
 
 // Componet classes - calling from componets class to interact with object we made
-#include "components/MD_TCS_3200.h"  // Color Sensor
-#include "components/Hall_Effect.h"  // detect magnets
+
+// ADD BACK WHEN ON MAIN SKETCH
+//#include "components/MD_TCS_3200.h"  // Color Sensor 
+//#include "components/Hall_Effect.h"  // detect magnets
 
 
 // Automation classes - accomplish task from object
+
 // #include "automation/ServoMovement" //change when we have this done
-#include "automation/DetectBlock.h"   // block color and magnet
-#include "automation/ReceiveOrder.h"  // Getting from kiosk
+//#include "automation/DetectBlock.h"   // block color and magnet
+//#include "automation/ReceiveOrder.h"  // Getting from kiosk
+
+// UNO TEST INCLUDES --- COMMENT OUT LATER 
+#include "MD_TCS_3200.h"  // Color Sensor 
+#include "Hall_Effect.h"  // detect magnets
+#include "DetectBlock.h"   // block color and magnet
+#include "ReceiveOrder.h"  // Getting from kiosk
+
+// for this sketch since this is one it's own can delte?
+#include "LTR_4206E_IR.h"
+LTR_4206E_IR IR(25);
+ReceiveOrder order(IR, 10.0f);
+
 
 
 #include <SoftwareSerial.h>
@@ -92,7 +107,7 @@ void loop() {
           for (uint8_t i = 0; i < order.count(); i++) {
             activeOrder[i] = order.block(i);  // store block color to activeOrder
 
-            Serial.println(activeORder[i]);
+            Serial.println(activeOrder[i]);
           }
         }
       }
