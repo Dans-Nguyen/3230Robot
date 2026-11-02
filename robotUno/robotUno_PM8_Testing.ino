@@ -6,9 +6,6 @@
 
 
 
-
-
-
 // Automation classes
 // #include "automation\ServoMovement" //change when we have this done
 #include "automation\DetectBlock.h"  // block color and magnet
@@ -28,8 +25,7 @@ Hall_Effect hallEffect(A2);
 
 
 DetectBlock detectBlock(colorSensor, hallEffect);
-ReceiveOrder::BlockColor activeOrder[ReceiveOrder::MAX_BLOCKS];
-uint8_t activeOrderCount = 0;
+
 
 
 char command;
@@ -88,7 +84,7 @@ void loop() {
      Serial.println(state);
    }
 switch (state) {
- case 120: { // Order updates, case number is the same as robot
+  /*case 120: { // Order updates, case number is the same as robot
     if (order.update()) {
        activeOrderCount = order.count();
 
@@ -98,16 +94,17 @@ switch (state) {
          activeOrder[i] = order.block(i); // store block color to activeOrder
 
 
-         Serial.println(activeORder[i])
+         Serial.println(activeOrder[i])
 
 
        }
-     }
+       }
+       */
+     
 
 
 
-
- }
+ 
  case 121 : { // Detect what color and if theres a magnet
 detectBlock.update();
      char blockColor = detectBlock.getColor();
