@@ -30,7 +30,6 @@ colorSensor.begin();
 colorSensor.update();
 char color = colorSensor.getBlockColor();
 
-
 */
 
 #ifndef MD_TCS3200_H
@@ -99,12 +98,12 @@ public:
     float GNorm = _Cf/_Gf * 100.0f;
     float BNorm = _Cf/_Bf * 100.0f;
 
-     Serial.print(RNorm, 2);
-     Serial.print(",\t");
-     Serial.print(GNorm, 2);
-    Serial.print(",\t");
-    Serial.println(BNorm, 2);
-/*
+    //  Serial.print(RNorm, 2);
+    //  Serial.print(",\t");
+    //  Serial.print(GNorm, 2);
+    // Serial.print(",\t");
+    // Serial.println(BNorm, 2);
+
     if (BNorm >= 20 && BNorm <= 25 &&
         RNorm  >= 60 && RNorm  <= 80 &&
         GNorm >= 15 && GNorm <= 20){
@@ -131,9 +130,9 @@ public:
       _blockColor = 'K';
     } 
 
-  */ 
-  // new value that work with uno
-if (BNorm >= 20 && BNorm <= 26 &&
+   
+  // CHANGE BINS --- recalibrate 
+/* if (BNorm >= 20 && BNorm <= 26 &&
         RNorm  >= 55 && RNorm  <= 85 &&
         GNorm >= 14 && GNorm <= 22){
 
@@ -158,6 +157,7 @@ if (BNorm >= 20 && BNorm <= 26 &&
       // Default / Unknown block
       _blockColor = 'K';
     }
+    */
   }
 
   char getColor() const {
