@@ -1,14 +1,9 @@
 // Compoents On Uno - Hall Effect, Color
 
-//#include "components\MD_TCS_3200.h" // Color
-//#include "components\Hall_Effect.h" // Magnet
-
 #include "MD_TCS_3200.h" // Color
 #include "Hall_Effect.h" // Magnet
 
 // Automation classes
-// #include "automation\ServoMovement" //change when we have this done
-//#include "automation\DetectBlock.h"  // block color and magnet
 #include "DetectBlock.h" // block color and magnet
 
 
@@ -17,30 +12,18 @@ SoftwareSerial UnoXbee(2, 3);  // RX, TX
 MD_TCS3200 colorSensor(4, 5, 6, 7, 8,10); // (S0,S1,S2,S3, Out, LED)
 Hall_Effect hallEffect(A2);
 
-
-
-
-// automation calls (active order storage variable)
-
-
 DetectBlock detectBlock(colorSensor, hallEffect);
-
-
 
 char command;
 int state = 0;
 
 void setup() {
- // setUp
- // Open serial communications with computer and wait for port to open:
- Serial.begin(57600); // make sure to also select this baud rate in your Serial Monitor window
-  // 9600 is reliable with SoftwareSerial on an Uno. The Mega must use the
- // same rate on Serial1, and both XBees must be configured for 9600 baud.
-  UnoXbee.begin(9600);
- // colorSensor.begin () : // color sensor fucntion
- //hallSensor.begin
- //pinMode(hallPin, INPUT)
-colorSensor.begin(); // start the color
+  Serial.begin(57600); 
+  UnoXbee.begin(115200); // Must match Mega's Serial2 baud rate of 115200
+
+  // Begin component objects
+  hallEffect.begin();
+  colorSensor.begin();
 
  Serial.println(F("UNO remote ready"));
  Serial.println(F("S = Start Robot"));
@@ -53,71 +36,47 @@ void loop() {
 
 
  // Set state directly from serial monitor. For debuggin purposes
- if (Serial.available() > 0) {
-   int requestedState = Serial.parseInt();
+  if (Serial.available() > 0) {
+    int requestedState = Serial.parseInt();
 
-   if (requestedState != 0) {
-     state = requestedState;
-   }
-command = Serial.read();
- // Did user type something into laptop?
-
-
- //if (Serial.available() > 0) {
+    if (requestedState != 0) {
+      state = requestedState;
    
-   if (command == 'S'){
-     Serial.println("Start");
-     state = 1;
-     // Send starting flag val
-     UnoXbee.write(255);
-
-
-     // Send that command wirelessly
-     UnoXbee.write(state);
-
-
-     Serial.print(F("Sent to Percy: "));
-     Serial.println(state);
-   }
-switch (state) {
-  /*case 120: { // Order updates, case number is the same as robot
-    if (order.update()) {
-       activeOrderCount = order.count();
-
-
-       // A complete start → colors → end message was received.
-       for (uint8_t i = 0; i < order.count(); i++) {
-         activeOrder[i] = order.block(i); // store block color to activeOrder
-
-
-         Serial.println(activeOrder[i])
-
-
-       }
-       }
-       */
-     
-
- case 121 : { // Detect what color and if theres a magnet
-detectBlock.update();
-     char blockColor = detectBlock.getColor();
-     bool isMagnet = detectBlock.isMagnet();
-  
-     Serial.print(blockColor);
-     Serial.println(isMagnet);
-
-     Serial.print("Color: ");
-Serial.print(blockColor);
-Serial.print(" | Magnet: ");
-Serial.println(isMagnet);
-
- break; }
- case 130 : { // Servos, change number once we decide on Mega
-
-
- }
-}
-  
- }
     }
+
+    command = Serial.read();
+    
+    if (command == 'S'){
+      Serial.println("Start");
+      state = 1;
+      // Send starting flag val
+      UnoXbee.write(255);
+
+      // Send that command wirelessly
+      UnoXbee.write(state);
+
+      Serial.print(F("Sent to Percy: "));
+      Serial.println(state);
+    }
+  }
+
+  switch (state) {
+
+    case 121 : { // Detect what color and if theres a magnet
+      detectBlock.update();
+      char blockColor = detectBlock.getColor();
+      bool isMagnet = detectBlock.isMagnet();
+  
+      Serial.print(blockColor);
+      Serial.println(isMagnet);
+
+      Serial.print("Color: ");
+      Serial.print(blockColor);
+      Serial.print(" | Magnet: ");
+      Serial.println(isMagnet);
+
+    break;}
+  
+  }
+}
 
