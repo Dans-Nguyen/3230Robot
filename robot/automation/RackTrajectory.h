@@ -131,21 +131,21 @@ class RackTrajectory {
     _tOld = _t;
     _theta1_old = _theta1;
 
-    // if (((_t - _print_time)/1000000.0f) > 0.1) {  // non-blocking way to delay printing
-    //   // print any variables of interest inside this if statement
-    //   Serial.print(_theta1);
-    //   Serial.print('\t');
-    //   Serial.print(_theta1_des);
-    //   Serial.print('\t');
-    //   Serial.print(_theta1_final);
-    //   Serial.print('\t');
-    //   Serial.print(constrain(_mc, -255, 255));
-    //   Serial.print('\t');
-    //   Serial.println(elapsedTime);
+    if (((_t - _print_time)/1000000.0f) > 0.1) {  // non-blocking way to delay printing
+      // print any variables of interest inside this if statement
+      Serial.print(_theta1);
+      Serial.print('\t');
+      Serial.print(_theta1_des);
+      Serial.print('\t');
+      Serial.print(_theta1_final);
+      Serial.print('\t');
+      Serial.print(constrain(_mc, -255, 255));
+      Serial.print('\t');
+      Serial.println(elapsedTime);
 
 
-    //   _print_time = _t;
-    // }
+      _print_time = _t;
+    }
   }  
 
   void reset() {

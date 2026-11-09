@@ -16,26 +16,32 @@ public:
   }
 
   void forward(int speed) {
+    speed = constrain(speed, -400, 400);
     md.setM1Speed(speed);
     md.setM2Speed(speed);
   }
 
   void backward(int speed) {
+    speed = constrain(speed, -400, 400);
     md.setM1Speed(-speed);
     md.setM2Speed(-speed);
   }
 
   void turnCW(int speed) {
+    speed = constrain(speed, -400, 400);
     md.setM1Speed(speed);
     md.setM2Speed(-speed);
   }
 
   void turnCCW(int speed) {
+    speed = constrain(speed, -400, 400);
     md.setM1Speed(-speed);
     md.setM2Speed(speed);
   }
 
   void setSpeeds(int m1Speed, int m2Speed) {
+    m1Speed = constrain(m1Speed, -400, 400);
+    m2Speed = constrain(m2Speed, -400, 400);
     md.setM1Speed(m1Speed);
     md.setM2Speed(m2Speed);
   }
@@ -47,6 +53,7 @@ public:
 
 private:
   DualTB9051FTGMotorShieldMod3230 md;
+
 };
 
 #endif
