@@ -1,6 +1,6 @@
 #include <Encoder.h>
 
-Encoder myEnc2(20, 21);
+Encoder myEnc2(3, 22);
 
 void setup() {
   Serial.begin(9600);

@@ -4,10 +4,10 @@
 class LineFollow {
 public:
 
-  LineFollow(QTRMD08RC& sensor, DriveControl& driveControl)
-    : _lineSensor(sensor), _drive(driveControl) {}
+  LineFollow(QTRMD08RC& sensor, DriveControl& driveControl, PID& PID)
+    : _lineSensor(sensor), _drive(driveControl), _PID(PID) {}
 
-  void start(int baseSpeed, float Kp) {
+  void start(int baseSpeed) {
     // update and get values from reflectance sensor
     _lineSensor.update();
     _lineSensor.getValues(_sensorVal);
@@ -25,12 +25,13 @@ public:
       _drive.stop();
       return;
     }
+    float linePos = num / den;
 
-    float linePosition = num / den;
-    float error = linePosition - 2.8f;  // middle of the 8-sensor array
+    //float error = linePosition - _targetPos;  // middle of the 8-sensor array
 
-    int m1c = (int)(baseSpeed + Kp * error);
-    int m2c = (int)(baseSpeed - Kp * error);
+
+    int m1c = (int)(baseSpeed + _PID.update(_targetPos, linePos));
+    int m2c = (int)(baseSpeed - _PID.update(_targetPos, linePos));
 
     _drive.setSpeeds(m1c, m2c);
   }
@@ -42,6 +43,8 @@ public:
 private:
   QTRMD08RC& _lineSensor;
   DriveControl& _drive;
+  PID& _PID;
+  float _targetPos = 2.8;
 
   uint16_t _sensorVal[QTRMD08RC::SensorCount] = {};
 

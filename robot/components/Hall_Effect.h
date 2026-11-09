@@ -1,5 +1,5 @@
 /* 
-
+Component class for the hall effect sensor
 
 Mega Pin : A2 
 Uno  Pin : A2

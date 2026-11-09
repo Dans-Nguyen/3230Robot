@@ -19,13 +19,13 @@ double Kp = 100;  //Proportional Gain for Trajectory Following
 long counts1, counts2, counts3;  // encoder counts
 int m1c = 100, m2c = 0;            //declare and initialize motor commands
 
-double GearRatio = 70;  // gear ratio
+double GearRatio = 50;  // gear ratio
 int countsPerRev = 64;  // encoder counts per Rev
 double rw = 4.2;          // wheel radius in cm
 double D = 22.2;          // distance between wheels in cm
 double xf = 50;         // final disance
-double phif = 3.1415;   // final angle in rotation
-double phid = 1.5707;   // final angle in turn
+double phif = PI;   // final angle in rotation
+double phid = PI/2.0f;   // final angle in turn
 double R = 50;         // turn radius disance
 
 double theta1, theta1_old = 0, omega1;     //position and velocity of wheel 1
@@ -95,10 +95,10 @@ void loop() {
   // omega2_des = theta2_final/maxT; // rad/s 
 
   // Drive in circle of r = 50 cm
-  // theta1_final = phid*R/rw; 
-  // theta2_final = phid*(R+D)/rw;
-  // omega1_des = theta1_final/maxT; // rad/s
-  // omega2_des = theta2_final/maxT; // rad/s 
+  theta1_final = phid*R/rw; 
+  theta2_final = phid*(R+D)/rw;
+  omega1_des = theta1_final/maxT; // rad/s
+  omega2_des = theta2_final/maxT; // rad/s 
   
   theta1_des = theta1_des + omega1_des*deltaT;
   theta2_des = theta2_des + omega2_des*deltaT;

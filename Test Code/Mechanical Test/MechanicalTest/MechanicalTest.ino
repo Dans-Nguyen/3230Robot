@@ -3,11 +3,10 @@
 
 // class: name: pin assignment --> objects
 // servo objects
-ServoControl armFallServo(44);
-ServoControl pickButtonServo(46);
-ServoControl paddleServo(45);
-ServoControl shipButtonServo(13);
-ServoControl leverServo(11);
+ServoControl pickButtonServo(45);
+ServoControl paddleServo(44);
+ServoControl shipButtonServo(12);
+ServoControl leverServo(13);
 
 /*
 int state = 0;
@@ -39,7 +38,7 @@ const int DRIVESPEED = 100;
 
 // RnP motor
 const int IN1 = 5;    // PWM pin -> L298N D1 / IN1
-const int IN2 = 3;   // PWM pin -> L298N D2 / IN2
+const int IN2 = 6;   // PWM pin -> L298N D2 / IN2
 
 enum rnpMOTION {RNPSTOPPED, EXTEND, RETRACT};
 rnpMOTION rnpMotion = RNPSTOPPED;
@@ -74,7 +73,7 @@ void setup() {
 
   // Match the Uno/XBee link baud rate. 9600 is reliable with the Uno's
   // SoftwareSerial implementation.
-  Serial1.begin(115200);
+  Serial2.begin(115200);
 
   md.init();
   md.enableDrivers();
@@ -83,9 +82,9 @@ void setup() {
   md.setM1Speed(0);
   md.setM2Speed(0);
 
+  setMotorSpeed(0);
+
   // initialize servo objects and set the angle 
-  armFallServo.begin();
-  armFallServo.setAngle(0);
 
   pickButtonServo.begin();
   pickButtonServo.setAngle(90);
@@ -113,9 +112,9 @@ void loop() {
 
 // check if uno sent something
   // A message contains two bytes: 255 followed by the command character.
-  // Wait for both so Serial1.read() never returns -1 for the command.
-  if (Serial1.available() >= 2 && Serial1.read() == 255) {
-    command = Serial1.read();
+  // Wait for both so Serial2.read() never returns -1 for the command.
+  if (Serial2.available() >= 2 && Serial2.read() == 255) {
+    command = Serial2.read();
 
     Serial.print(F("Mega received: "));
     Serial.println(command);
@@ -168,20 +167,6 @@ void loop() {
         rnpMotion = RETRACT;
         rnpMotionStartTime = millis();
         break;  
-
-      case 'A':
-        // Move armFall servo
-        switch (armFallPosition){
-          case 0:
-            armFallServo.setAngle(180);
-            armFallPosition = 1;
-            break;
-          case 1:
-            armFallServo.setAngle(0);
-          armFallPosition = 0;
-            break;
-        }
-        break;
 
       case 'P':
         // Pick button 
