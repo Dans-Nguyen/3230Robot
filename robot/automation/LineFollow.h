@@ -29,8 +29,14 @@ public:
     float linePosition = num / den;
     float error = linePosition - 2.8f;  // middle of the 8-sensor array
 
+<<<<<<< Updated upstream
     int m1c = (int)(baseSpeed + Kp * error);
     int m2c = (int)(baseSpeed - Kp * error);
+=======
+
+    int m1c = (int)(baseSpeed - _PID.update(_targetPos, linePos));
+    int m2c = (int)(baseSpeed + _PID.update(_targetPos, linePos));
+>>>>>>> Stashed changes
 
     _drive.setSpeeds(m1c, m2c);
   }

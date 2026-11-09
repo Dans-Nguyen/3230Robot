@@ -28,6 +28,7 @@ void setup() {
 void loop() {
   // Did user type something into laptop?
   if (Serial.available() > 0) {
+<<<<<<< Updated upstream
     command = Serial.read();
 
     if (command == 'S'){
@@ -35,16 +36,38 @@ void loop() {
       state = 1;
       // Send starting flag val
       UnoXbee.write(255);
+=======
+    int requestedState = Serial.parseInt();
 
-      // Send that command wirelessly
-      UnoXbee.write(state);
+    if (requestedState != 0) {
+      state = requestedState;
+   
+    } 
+  }
 
+  command = Serial.read();
+    
+  if (command == 'S'){
+    Serial.println("Start");
+    state = 1;
+    // Send starting flag val
+    UnoXbee.write(255);
+>>>>>>> Stashed changes
+
+    // Send that command wirelessly
+    UnoXbee.write(state);
+
+<<<<<<< Updated upstream
       Serial.print(F("Sent to robot: "));
       Serial.println(state);
     }
 
     command = 'a';
     state = 0;
+=======
+    Serial.print(F("Sent to Percy: "));
+    Serial.println(state);
+>>>>>>> Stashed changes
   }
 
 }
