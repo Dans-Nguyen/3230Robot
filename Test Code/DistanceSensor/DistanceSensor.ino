@@ -1,4 +1,4 @@
-const int distSensor = A4;
+const int distSensor = A5;
 int val = 0;
 float voltage = 0;
 float distcm = 0;

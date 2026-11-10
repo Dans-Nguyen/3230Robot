@@ -30,8 +30,8 @@ public:
     //float error = linePosition - _targetPos;  // middle of the 8-sensor array
 
 
-    int m1c = (int)(baseSpeed + _PID.update(_targetPos, linePos));
-    int m2c = (int)(baseSpeed - _PID.update(_targetPos, linePos));
+    int m1c = (int)(baseSpeed - _PID.update(_targetPos, linePos));
+    int m2c = (int)(baseSpeed + _PID.update(_targetPos, linePos));
 
     _drive.setSpeeds(m1c, m2c);
   }

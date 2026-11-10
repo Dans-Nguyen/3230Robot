@@ -42,22 +42,22 @@ void loop() {
     if (requestedState != 0) {
       state = requestedState;
    
-    }
+    } 
+  }
 
-    command = Serial.read();
+  command = Serial.read();
     
-    if (command == 'S'){
-      Serial.println("Start");
-      state = 1;
-      // Send starting flag val
-      UnoXbee.write(255);
+  if (command == 'S'){
+    Serial.println("Start");
+    state = 1;
+    // Send starting flag val
+    UnoXbee.write(255);
 
-      // Send that command wirelessly
-      UnoXbee.write(state);
+    // Send that command wirelessly
+    UnoXbee.write(state);
 
-      Serial.print(F("Sent to Percy: "));
-      Serial.println(state);
-    }
+    Serial.print(F("Sent to Percy: "));
+    Serial.println(state);
   }
 
   switch (state) {

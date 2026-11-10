@@ -6,6 +6,7 @@
 #include "components\LTR_4206E_IR.h"
 #include "components\LimSwitch.h"
 #include "components\Motor20D.h"
+#include "components\ServoControl.h"
 #include <Encoder.h>
 
 // Automation classes
@@ -19,10 +20,10 @@
 #include "automation\WallFollow.h"
 
 // Initialize PID objects
-PID lineFollowPID(100, 0, 0);  // PID object for line following
-PID wallFollowPID(100, 0, 0);  // PID object for wall following
-PID driveTraj1PID(400, 0, 10); // PID object for wheel 1 drive trajectory
-PID driveTraj2PID(400, 0, 10); // PID object for wheel 2 drive trajectory
+PID lineFollowPID(300, 0, 10);  // PID object for line following
+PID wallFollowPID(50, 0, 0);  // PID object for wall following
+PID driveTraj1PID(600, 0, 10); // PID object for wheel 1 drive trajectory
+PID driveTraj2PID(600, 0, 10); // PID object for wheel 2 drive trajectory
 PID rackTrajPID(400, 0, 0); // PID object for rack trajectory
 
 // Initialize encoder objects
@@ -43,6 +44,18 @@ LTR_4206E_IR IR(25);
 ReceiveOrder order(IR, 10.0f);
 LimSwitch limSwitch(53);
 WallFollow wallFollow(distSensorR, drive, wallFollowPID);
+
+// Initial servo angles
+float pickButtonInit = 90;
+float paddleInit = 0;
+float shipButtonInit = 90;
+float leverInit = 30;
+
+// servo objects
+ServoControl pickButtonServo(45, pickButtonInit);
+ServoControl paddleServo(44, paddleInit);
+ServoControl shipButtonServo(12, shipButtonInit);
+ServoControl leverServo(13, leverInit);
 
 const int IN1 = 5;   // PWM pin -> L298N IN1. Give signal to extend
 const int IN2 = 6;   // PWM pin -> L298N IN2. Give signal to retract
@@ -67,10 +80,15 @@ RackTrajectory rackTrajectory(78.0f, 20, 1.252f,
                               motor20D, enc3, limSwitch, rackTrajPID);
 
  
-double t, t_old, deltaT, print_time, t0 = 0;  // declare some time variables
+double t, t_old, deltaT, t0 = 0;  // declare some time variables
+unsigned long wallFollowStartT = 0;
+unsigned long servoStartT = 0;
+bool wallFollowTiming = false;
+bool servoTiming = false;
 
 // Initialize data storage variables
 float distCm; // Distance from distance sensor in cm
+float rackSpeed = 15.0f; // rack speed in cm/s
 
 // Active order storage variable
 ReceiveOrder::BlockColor activeOrder[ReceiveOrder::MAX_BLOCKS];
@@ -94,6 +112,12 @@ void setup() {
   limSwitch.begin();
   motor20D.begin();
 
+  // initialize servo objects
+
+  pickButtonServo.begin();  
+  paddleServo.begin();
+  shipButtonServo.begin();
+  leverServo.begin();
   
 
   t0 = micros()/1000000.; // initialize time in seconds
@@ -113,7 +137,7 @@ void loop() {
   if (Serial.available() > 0) {
     int requestedState = Serial.parseInt();
 
-    if (requestedState != 0) {
+    if (requestedState != 999) {
       state = requestedState;
 
       Serial.print(F("State set to: "));
@@ -125,143 +149,14 @@ void loop() {
       Serial.read();
     }
   }
+  Serial.println(state);
 
-  switch (state) {
+  // LEAVING START AREA 0 - 3
+  state = StartStates(state);
 
-    // RESETTING CASE
-    case 0:{
-      if (rackTrajectory.state == RackTrajectory::IDLE) {
-        rackTrajectory.startHome(); // home
-      }
+  // PICKING STATION TRAJECTORY 4 - 
+  state = PickStationTrajStates(state);
 
-      rackTrajectory.update();
-
-      if (rackTrajectory.state == RackTrajectory::IDLE) {
-        state = 999;                  // Advance to next robot state
-      }
-    break;}
-
-    // LEAVING STARTING AREA
-    case 1:{ // line follow
-      lineFollow.start(300);
-
-      // Get distance data from front sensor
-      distCm = distSensorF.getDistCm();
-
-      if(distCm <= 38){
-        // distance from wall and front sensor achieved, stop line following
-        drive.stop();
-        state = 2;
-      }
-
-    break;}
-
-    case 2:{ // turn 90 degrees
-      if (driveTrajectory.state == DriveTrajectory::IDLE) {
-        driveTrajectory.reset();
-        // Start command sets driveTrajecoty state to ACTIVE
-        driveTrajectory.startRotate(PI/2.0f, 0.5); // 90 deg in 0.5 seconds
-      }
-
-      driveTrajectory.update();
-
-      if (driveTrajectory.state == DriveTrajectory::IDLE) {
-        state = 0;                  // Advance to next robot state
-      }
-
-    break;}
-
-    case 3:{ // wall follow for some time
-
-      
-      // after time elapsed (ginny run into wall)
-      // state = 4;
-
-    break;}
-
-    // PICKING STATION TRAJECTORY
-    case 4:{ // state for reversing
-
-    
-    // if count from line counting = 2
-    // state = 5;
-    break;}
-
-
-
-
-
-
-
-
-
-    // 120 state for testing order reception
-    case 120:{
-      float frequency = IR.getFrequency();
-      Serial.println(frequency);
-      if (order.update()) {
-        activeOrderCount = order.count();
-        
-        // A complete start → colors → end message was received.
-        for (uint8_t i = 0; i < order.count(); i++) {
-          activeOrder[i] = order.block(i); // store block color to activeOrder
-          //Serial.println(activeOrder[i]);
-          if(activeOrder[i] == 1){
-            Serial.println("RED");
-          } else if(activeOrder[i] == 2){
-            Serial.println("YELLOW");
-          } else if(activeOrder[i] == 3){
-            Serial.println("BLUE");
-          } else if(activeOrder[i] == 4){
-            Serial.println("BROWN");
-          } 
-
-
-        }
-
-        state = 0;
-      }
-
-      
-    break;}
-
-    // 121 state for testing block detection
-    case 121:{
-      detectBlock.update();
-      char blockColor = detectBlock.getColor();
-      bool isMagnet = detectBlock.isMagnet();
-      Serial.print(blockColor);
-      Serial.println(isMagnet);
-      
-    break;}
-
-    // 122 state for testing trajectory
-    case 122:{
-
-      if (driveTrajectory.state == DriveTrajectory::IDLE) {
-        driveTrajectory.reset();
-        driveTrajectory.startStraight(50.0, 1.0); // 50 cm in 6 seconds
-      }
-
-      driveTrajectory.update();
-
-      if (driveTrajectory.state == DriveTrajectory::IDLE) {
-        state = 999;                  // Advance to next robot state
-      }
-    break;}
-
-    // 123 state for testing rack trajectory
-    case 123:{
-      if (rackTrajectory.state == RackTrajectory::IDLE) {
-        rackTrajectory.setPosition(20.0, 5.0); // 10 cm at 5 cm/s
-      }
-
-      rackTrajectory.update();
-
-      if (rackTrajectory.state == RackTrajectory::IDLE) {
-        state = 999;                  // Advance to next robot state
-      }
-    break;}
-  
-  }
+  // TEST CASES
+  state = TestStates(state);
 }
