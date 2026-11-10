@@ -70,11 +70,6 @@ void loop() {
       Serial.print(blockColor);
       Serial.println(isMagnet);
 
-      Serial.print("Color: ");
-      Serial.print(blockColor);
-      Serial.print(" | Magnet: ");
-      Serial.println(isMagnet);
-
     break;}
   
   }

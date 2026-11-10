@@ -1,8 +1,8 @@
 #ifndef DETECT_BLOCK_H
 #define DETECT_BLOCK_H
 
-#include "Hall_Effect.h" // Magnet
-#include "MD_TCS_3200.h" // Color sensor class must come first
+//#include "Hall_Effect.h" // Magnet
+//#include "MD_TCS_3200.h" // Color sensor class must come first
 
 
 class DetectBlock {
@@ -14,7 +14,7 @@ public:
   void update(){
     _colorSensor.update();
     _Volt = _hallEffect.getVal();
-
+    Serial.print(_Volt);
     _blockColor = _colorSensor.getColor();
 
     // Check if quiescent voltage is some value above or below 2.5V
