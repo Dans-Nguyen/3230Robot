@@ -18,7 +18,7 @@ class WallFollow{
       float distCm = _distSensor.getDistCm();
 
       int m1c = (int)(baseSpeed + _PID.update(targetDist, distCm));
-      int m2c = (int)(baseSpeed - _PID.update(targetDist, distCm));
+      int m2c = (int)(baseSpeed); //- _PID.update(targetDist, distCm));
 
       _drive.setSpeeds(m1c, m2c);
     }
