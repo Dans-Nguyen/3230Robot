@@ -1,7 +1,7 @@
 int PickStationTrajStates(int state){
   switch(state){
     // PICKING STATION TRAJECTORY
-    case 4:{ // reverse
+    case 4:{ // reverse 
 
       if (driveTrajectory.state == DriveTrajectory::IDLE) {
         driveTrajectory.reset();

@@ -83,8 +83,10 @@ RackTrajectory rackTrajectory(78.0f, 20, 1.252f,
 double t, t_old, deltaT, t0 = 0;  // declare some time variables
 unsigned long wallFollowStartT = 0;
 unsigned long servoStartT = 0;
+unsigned long blockProcessT = 0;
 bool wallFollowTiming = false;
 bool servoTiming = false;
+bool blockProcessTiming = false;
 
 // Initialize data storage variables
 float distCm; // Distance from distance sensor in cm
@@ -149,13 +151,16 @@ void loop() {
       Serial.read();
     }
   }
-  Serial.println(state);
+  //Serial.println(state);
 
   // LEAVING START AREA 0 - 3
   state = StartStates(state);
 
   // PICKING STATION TRAJECTORY 4 - 
   state = PickStationTrajStates(state);
+
+  // LOOP STATES 50 -
+  state = LoopCases(state);
 
   // TEST CASES
   state = TestStates(state);

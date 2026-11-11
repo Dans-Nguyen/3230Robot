@@ -12,6 +12,7 @@ public:
     _Volt = _hallEffect.getVal();
 
     _blockColor = _colorSensor.getColor();
+    _blockDetected = _colorSensor.blockDetected();
 
     // Check if quiescent voltage is some value above or below 2.5V
     if (_Volt >= 3.0f || _Volt <= 2.0f) {
@@ -30,6 +31,10 @@ public:
     return _isMagnet;
   }
 
+  bool blockDetected() const {
+    return _blockDetected;
+  }
+
 private:
 MD_TCS3200& _colorSensor;
 Hall_Effect& _hallEffect;
@@ -37,6 +42,7 @@ Hall_Effect& _hallEffect;
 char _blockColor;
 float _Volt;
 bool _isMagnet;
+bool _blockDetected;
 
 };
 
