@@ -14,7 +14,7 @@ public:
   void update(){
     _colorSensor.update();
     _Volt = _hallEffect.getVal();
-    Serial.print(_Volt);
+    //Serial.print(_Volt); //check voltage 
     _blockColor = _colorSensor.getColor();
 
     // Check if quiescent voltage is some value above or below 2.5V
