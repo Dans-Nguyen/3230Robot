@@ -76,10 +76,10 @@ int TestStates(int state){
         servoTiming = true;
       }
 
-      pickButtonServo.setAngle(150);
+      pickButtonServo.setAngle(pickButtonState2);
 
       if (millis() - servoStartT >= 2000UL){ // stop after 2 s 
-        pickButtonServo.setAngle(pickButtonInit);
+        pickButtonServo.setAngle(pickButtonState1);
         servoTiming = false;
         state = 999;
       }
@@ -92,10 +92,10 @@ int TestStates(int state){
         servoTiming = true;
       }
 
-      paddleServo.setAngle(80);
+      paddleServo.setAngle(paddleState2);
 
-      if (millis() - servoStartT >= 2000UL){ // stop after 2 s  
-        paddleServo.setAngle(paddleInit);
+      if (millis() - servoStartT >= 2000UL){ // stop after 2 s 
+        paddleServo.setAngle(paddleState1);
         servoTiming = false;
         state = 999;
       }
@@ -108,10 +108,10 @@ int TestStates(int state){
         servoTiming = true;
       }
 
-      shipButtonServo.setAngle(180);
+      shipButtonServo.setAngle(shipButtonState2);
 
       if (millis() - servoStartT >= 2000UL){ // stop after 2 s  
-        shipButtonServo.setAngle(shipButtonInit);
+        shipButtonServo.setAngle(shipButtonState1);
         servoTiming = false;
         state = 999;
       }
@@ -124,10 +124,10 @@ int TestStates(int state){
         servoTiming = true;
       }
 
-      leverServo.setAngle(150);
+      leverServo.setAngle(leverState2);
 
       if (millis() - servoStartT >= 2000UL){ // stop after 2 s  
-        leverServo.setAngle(leverInit);
+        leverServo.setAngle(leverState1);
         servoTiming = false;
         state = 999;
       }

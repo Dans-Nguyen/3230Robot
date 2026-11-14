@@ -91,6 +91,7 @@ public:
 
     if (_Cf <= 0 || _Cf >= 100) {
       _blockColor = 'N';   // invalid/no reading
+      _blockDetected = false;
       return;
     }
 
@@ -111,6 +112,7 @@ public:
 
       // Red block
       _blockColor = 'R';
+      _blockDetected = true;
 
     } else if (BNorm >= 40 && BNorm <= 60 &&
                RNorm >= 10 && RNorm <= 25 &&
@@ -118,6 +120,7 @@ public:
                 
       // blue block
       _blockColor = 'B';
+      _blockDetected = true;
 
     } else if(BNorm >= 20 && BNorm <= 25 &&
               RNorm >= 40 && RNorm <= 60 &&
@@ -125,10 +128,12 @@ public:
 
       // yellow block
       _blockColor = 'Y';
+      _blockDetected = true;
 
     } else {
       // brown block
       _blockColor = 'K';
+      _blockDetected = true;
     } 
 
     
@@ -137,6 +142,10 @@ public:
 
   char getColor() const {
     return _blockColor;
+  }
+
+  bool blockDetected() const {
+    return _blockDetected;
   }
 
 private:
@@ -156,6 +165,9 @@ private:
 
   // Block Color
   char _blockColor;
+
+  // Block detected
+  bool _blockDetected = false;
   
   const int _numSamples;
 };

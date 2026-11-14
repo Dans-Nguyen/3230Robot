@@ -26,7 +26,6 @@ void setup() {
   colorSensor.begin();
 
  Serial.println(F("UNO remote ready"));
- Serial.println(F("S = Start Robot"));
 
 
 }
@@ -35,30 +34,30 @@ void setup() {
 void loop() {
 
 
- // Set state directly from serial monitor. For debuggin purposes
+  // Set state directly from serial monitor. For debuggin purposes
   if (Serial.available() > 0) {
-    int requestedState = Serial.parseInt();
+  int requestedState = Serial.parseInt();
 
-    if (requestedState != 0) {
-      state = requestedState;
-   
-    } 
+  // Remove the Enter characters left in the serial buffer
+  while (Serial.available() > 0) {
+    char c = Serial.peek();
+    if (c == '\n' || c == '\r') {
+      Serial.read();
+    } else {
+      break;
+    }
   }
 
-  command = Serial.read();
-    
-  if (command == 'S'){
-    Serial.println("Start");
-    state = 1;
-    // Send starting flag val
-    UnoXbee.write(255);
+  if (requestedState != 0) {
+    state = requestedState;
 
-    // Send that command wirelessly
-    UnoXbee.write(state);
+    UnoXbee.write((uint8_t)255);   // start/header byte
+    UnoXbee.write((uint8_t)state); // raw one-byte state
 
     Serial.print(F("Sent to Percy: "));
     Serial.println(state);
   }
+}
 
   switch (state) {
 

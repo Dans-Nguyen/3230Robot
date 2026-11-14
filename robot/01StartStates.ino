@@ -24,11 +24,7 @@ int StartStates(int state){
 
       rackTrajectory.update();
 
-      // Get distance data from front sensor
-      distCm = distSensorF.getDistCm();
-
-
-      if(distCm <= 32){
+      if(distSensorF.getDistCm() <= 32){
         // distance from wall and front sensor achieved, stop line following
         drive.stop();
         state = 2;
@@ -40,7 +36,7 @@ int StartStates(int state){
       if (driveTrajectory.state == DriveTrajectory::IDLE) {
         driveTrajectory.reset();
         // Start command sets driveTrajecoty state to ACTIVE
-        driveTrajectory.startRotate(PI/2.0f, 0.5); // 90 deg in 0.5 seconds
+        driveTrajectory.startRotate(PI/2.0f, 1); // 90 deg in 1 seconds
       }
 
       driveTrajectory.update();

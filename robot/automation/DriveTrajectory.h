@@ -52,13 +52,18 @@ class DriveTrajectory {
   }
 
   // Drive in circle of radius r for phi radians 
-  void startCurve(double phi, double r, double maxT) {
+  void startCurve(double phi, double r, double maxT, bool turnRight) {
     state = ACTIVE;
 
     _maxT = maxT;
     
-    _theta1_final = phi*r/_rw; 
-    _theta2_final = phi*(r+_D)/_rw;
+    if (turnRight) {
+    _theta1_final = phi * r / _rw;
+    _theta2_final = phi * (r + _D) / _rw;
+  } else {
+    _theta1_final = phi * (r + _D) / _rw;
+    _theta2_final = phi * r / _rw;
+  }
 
     _omega1_des = _theta1_final/maxT; // rad/s
     _omega2_des = _theta2_final/maxT; // rad/s 
