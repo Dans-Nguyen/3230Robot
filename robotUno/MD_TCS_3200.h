@@ -104,29 +104,39 @@ public:
     // Serial.print(",\t");
     // Serial.println(BNorm, 2);
 
-    if (BNorm >= 20 && BNorm <= 25 &&
-        RNorm  >= 60 && RNorm  <= 80 &&
-        GNorm >= 15 && GNorm <= 20){
+    if (BNorm >= 20 && BNorm <= 26 &&
+        RNorm  >= 55 && RNorm  <= 85 &&
+        GNorm >= 14 && GNorm <= 22){
 
       // Red block
       _blockColor = 'R';
 
-    } else if (BNorm >= 40 && BNorm <= 60 &&
-               RNorm >= 10 && RNorm <= 25 &&
-               GNorm >= 20 && GNorm <= 34){
+    } else if (BNorm >= 45 && BNorm <= 54 &&
+               RNorm >= 15 && RNorm <= 22 &&
+               GNorm >= 30 && GNorm <= 32){
                 
       // blue block
       _blockColor = 'B';
 
-    } else if(BNorm >= 20 && BNorm <= 25 &&
-              RNorm >= 40 && RNorm <= 60 &&
-              GNorm >= 30 && GNorm <= 40){
+    } else if(BNorm >= 23 && BNorm <= 26 &&
+              RNorm >= 37 && RNorm <= 43 &&
+              GNorm >= 36 && GNorm <= 40){
 
       // yellow block
       _blockColor = 'Y';
+      
 
-    } else {
-      // brown block
+    } else if(BNorm >= 27 && BNorm <= 28 &&
+              RNorm >= 39 && RNorm <= 40 &&
+              GNorm >= 28 && GNorm <= 30){
+
+      // light brown
+      _blockColor = 'K';
+              }else if (BNorm >= 28 && BNorm <= 31 &&
+              RNorm >= 32 && RNorm <= 37 &&
+              GNorm >= 31 && GNorm <= 32){
+      // dark brown
+      
       _blockColor = 'K';
     } 
 
