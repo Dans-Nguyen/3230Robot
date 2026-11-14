@@ -20,7 +20,7 @@
 #include "automation\WallFollow.h"
 
 // Initialize PID objects
-PID lineFollowPID(300, 0, 10);  // PID object for line following
+PID lineFollowPID(50, 0, 10);  // PID object for line following
 PID wallFollowPID(50, 0, 0);  // PID object for wall following
 PID driveTraj1PID(600, 0, 10); // PID object for wheel 1 drive trajectory
 PID driveTraj2PID(600, 0, 10); // PID object for wheel 2 drive trajectory
@@ -45,17 +45,22 @@ ReceiveOrder order(IR, 10.0f);
 LimSwitch limSwitch(53);
 WallFollow wallFollow(distSensorR, drive, wallFollowPID);
 
-// Initial servo angles
-float pickButtonInit = 90;
-float paddleInit = 0;
-float shipButtonInit = 90;
-float leverInit = 30;
+// Servo angle states
+float pickButtonState1 = 90;
+float paddleState1 = 0;
+float shipButtonState1 = 30;
+float leverState1 = 5;
+
+float pickButtonState2 = 150;
+float paddleState2 = 90;
+float shipButtonState2 = 100;
+float leverState2 = 125;
 
 // servo objects
-ServoControl pickButtonServo(45, pickButtonInit);
-ServoControl paddleServo(44, paddleInit);
-ServoControl shipButtonServo(12, shipButtonInit);
-ServoControl leverServo(13, leverInit);
+ServoControl pickButtonServo(45, pickButtonState1);
+ServoControl paddleServo(44, paddleState1);
+ServoControl shipButtonServo(12, shipButtonState1);
+ServoControl leverServo(13, leverState1);
 
 const int IN1 = 5;   // PWM pin -> L298N IN1. Give signal to extend
 const int IN2 = 6;   // PWM pin -> L298N IN2. Give signal to retract
@@ -89,7 +94,6 @@ bool servoTiming = false;
 bool blockProcessTiming = false;
 
 // Initialize data storage variables
-float distCm; // Distance from distance sensor in cm
 float rackSpeed = 15.0f; // rack speed in cm/s
 
 // Active order storage variable

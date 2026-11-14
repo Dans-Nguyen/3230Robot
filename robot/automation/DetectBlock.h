@@ -15,7 +15,7 @@ public:
     _blockDetected = _colorSensor.blockDetected();
 
     // Check if quiescent voltage is some value above or below 2.5V
-    if (_Volt >= 3.0f || _Volt <= 2.0f) {
+    if (_Volt >= 2.8f || _Volt <= 2.2f) {
       _isMagnet = true;
     } else {
       _isMagnet = false;

@@ -10,17 +10,17 @@ int LoopCases(int state){
       }
 
       if (rackTrajectory.state == RackTrajectory::IDLE) {
-        rackTrajectory.setPosition(15, rackSpeed);
+        rackTrajectory.setPosition(10, rackSpeed);
       }
 
       rackTrajectory.update();
 
-      pickButtonServo.setAngle(150);
+      pickButtonServo.setAngle(pickButtonState2);
       //Serial.println(servoStartT);
 
       if (rackTrajectory.state == RackTrajectory::IDLE 
           && (millis() - servoStartT) >= 1000UL){ 
-        pickButtonServo.setAngle(pickButtonInit);
+        pickButtonServo.setAngle(pickButtonState1);
         servoTiming = false;
         state = 51;
       }
