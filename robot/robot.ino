@@ -20,7 +20,7 @@
 #include "automation\WallFollow.h"
 
 // Initialize PID objects
-PID lineFollowPID(50, 0, 10);  // PID object for line following
+PID lineFollowPID(100, 0, 10);  // PID object for line following
 PID wallFollowPID(50, 0, 0);  // PID object for wall following
 PID driveTraj1PID(600, 0, 10); // PID object for wheel 1 drive trajectory
 PID driveTraj2PID(600, 0, 10); // PID object for wheel 2 drive trajectory
@@ -51,7 +51,7 @@ float paddleState1 = 0;
 float shipButtonState1 = 30;
 float leverState1 = 5;
 
-float pickButtonState2 = 150;
+float pickButtonState2 = 145;
 float paddleState2 = 90;
 float shipButtonState2 = 100;
 float leverState2 = 125;

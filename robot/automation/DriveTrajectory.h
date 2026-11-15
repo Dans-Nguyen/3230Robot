@@ -52,12 +52,12 @@ class DriveTrajectory {
   }
 
   // Drive in circle of radius r for phi radians 
-  void startCurve(double phi, double r, double maxT, bool turnRight) {
+  void startCurve(double phi, double r, double maxT, bool turnLeft) {
     state = ACTIVE;
 
     _maxT = maxT;
     
-    if (turnRight) {
+    if (turnLeft) {
     _theta1_final = phi * r / _rw;
     _theta2_final = phi * (r + _D) / _rw;
   } else {

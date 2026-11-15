@@ -67,6 +67,11 @@ int TestStates(int state){
       }
     break;}
 
+    // 124 state for testing limit switch
+    case 124:{
+      Serial.println(limSwitch.state());
+    break;}
+
 
     // STATES FOR TESTING ACTUATION
     case 400:{

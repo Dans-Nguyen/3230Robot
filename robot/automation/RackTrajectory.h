@@ -188,8 +188,8 @@ class RackTrajectory {
 
   long _counts1;  // encoder counts
 
-  const double _positionTolerance = 0.05;  // rad
-  const double _velocityTolerance = 0.05;  // rad/s
+  const double _positionTolerance = 0.1;  // rad
+  const double _velocityTolerance = 0.1;  // rad/s
 
   // Motor speed command
   int _mc = 0;
