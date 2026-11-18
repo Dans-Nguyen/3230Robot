@@ -163,9 +163,6 @@ public:
       // Yellow block
       _blockColor = 'Y';
 
-    } else {
-      // Default / Unknown block
-      _blockColor = 'K';
     }
     */
   }

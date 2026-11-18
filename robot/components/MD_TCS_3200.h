@@ -130,13 +130,7 @@ public:
       _blockColor = 'Y';
       _blockDetected = true;
 
-    } else {
-      // brown block
-      _blockColor = 'K';
-      _blockDetected = true;
-    } 
-
-    
+    }
 
   }
 

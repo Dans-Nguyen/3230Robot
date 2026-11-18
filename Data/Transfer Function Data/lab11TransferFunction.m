@@ -44,7 +44,7 @@ function [K, tau, omega_ss] =  lab11TransferFunction(omega,tOut,d,titleStr)
 
     % Time constant approximation graph
     figure;
-    plot(tOut(1:12), y(1:12)); % plot only cropped data
+    plot(tOut(1:12), y(1:12), "ro", Displayname="Data"); % plot only cropped data
     xlabel("Time [s]")
     ylabel("ln(1-\Omega/\Omega_{ss})")
     

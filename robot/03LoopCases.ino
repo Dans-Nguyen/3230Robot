@@ -2,6 +2,27 @@ int LoopCases(int state){
 
   // LOOPING CASES
   switch(state){
+    case 49:{ // get order
+      if (order.update()) {
+        activeOrderCount = order.count();
+        
+        // A complete start → colors → end message was received.
+        for (uint8_t i = 0; i < order.count(); i++) {
+          activeOrder[i] = order.block(i); // store block color to activeOrder
+          //Serial.println(activeOrder[i]);
+          if(activeOrder[i] == 1){
+            Serial.println("RED");
+          } else if(activeOrder[i] == 2){
+            Serial.println("YELLOW");
+          } else if(activeOrder[i] == 3){
+            Serial.println("BLUE");
+          }
+        }
+        state = 999;
+      }
+
+    break;}
+
     case 50:{ // set rack to init position and hit picking station button
       // record time once
       if (!servoTiming){
@@ -83,5 +104,7 @@ int LoopCases(int state){
 
   }
 
+  
   return state;
+
 }
