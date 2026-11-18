@@ -4,7 +4,7 @@ clear, close all, clc
 data4_1 = load("data4_2_grounded_no_ginny.mat"); % col: t, V, M
 omega = data4_1.data(:,2);
 tOut = data4_1.data(:,1);
-d = 10; % Input step voltage
+d = 5; % Input step voltage
 titleStr="Percy Transfer Function without Ginny";
 
 [K, tau, omega_ss] = lab11TransferFunction(omega, tOut, d, titleStr)
@@ -13,7 +13,7 @@ titleStr="Percy Transfer Function without Ginny";
 data4_1 = load("data4_2_grounded_with_ginny.mat"); % col: t, V, M
 omega = data4_1.data(:,2);
 tOut = data4_1.data(:,1);
-d = 10; % Input step voltage
+d = 5; % Input step voltage
 titleStr="Percy Transfer Function without Ginny";
 
 [K, tau, omega_ss] = lab11TransferFunction(omega, tOut, d, titleStr)

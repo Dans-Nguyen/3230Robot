@@ -8,7 +8,7 @@
 
 class ReceiveOrder {
 public:
-  enum BlockColor : uint8_t { NONE, RED, YELLOW, BLUE, BROWN };
+  enum BlockColor : uint8_t { NONE, RED, YELLOW, BLUE};
 
   static const uint8_t MAX_BLOCKS = 10;
 
@@ -99,7 +99,6 @@ private:
     if (near(frequency, 400)) return RED;
     if (near(frequency, 500)) return YELLOW;
     if (near(frequency, 600)) return BLUE;
-    if (near(frequency, 700)) return BROWN;
     if (near(frequency, 800)) return END;
     return INVALID;
   }

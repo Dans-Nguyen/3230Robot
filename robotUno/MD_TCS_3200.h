@@ -154,9 +154,6 @@ if (BNorm >= 20 && BNorm <= 26 &&
       // Yellow block
       _blockColor = 'Y';
 
-    } else {
-      // Default / Unknown block
-      _blockColor = 'K';
     }
   }
 
