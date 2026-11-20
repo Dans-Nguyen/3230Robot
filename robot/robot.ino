@@ -1,23 +1,23 @@
 // Component classes
-#include "components\SharpGP2Y0A21YK0F.h"
-#include "components\QTRMD08RC.h"
-#include "components\MD_TCS_3200.h"
-#include "components\Hall_Effect.h"
-#include "components\LTR_4206E_IR.h"
-#include "components\LimSwitch.h"
-#include "components\Motor20D.h"
-#include "components\ServoControl.h"
+#include "components/SharpGP2Y0A21YK0F.h"
+#include "components/QTRMD08RC.h"
+#include "components/MD_TCS_3200.h"
+#include "components/Hall_Effect.h"
+#include "components/LTR_4206E_IR.h"
+#include "components/LimSwitch.h"
+#include "components/Motor20D.h"
+#include "components/ServoControl.h"
 #include <Encoder.h>
 
 // Automation classes
-#include "automation\PID.h"
-#include "automation\DriveControl.h"
-#include "automation\LineFollow.h"
-#include "automation\DetectBlock.h"
-#include "automation\ReceiveOrder.h"
-#include "automation\DriveTrajectory.h"
-#include "automation\RackTrajectory.h"
-#include "automation\WallFollow.h"
+#include "automation/PID.h"
+#include "automation/DriveControl.h"
+#include "automation/LineFollow.h"
+#include "automation/DetectBlock.h"
+#include "automation/ReceiveOrder.h"
+#include "automation/DriveTrajectory.h"
+#include "automation/RackTrajectory.h"
+#include "automation/WallFollow.h"
 
 // Initialize PID objects
 PID lineFollowPID(100, 0, 10);  // PID object for line following
