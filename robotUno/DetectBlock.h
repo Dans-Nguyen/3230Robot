@@ -10,7 +10,7 @@ public:
   void update(){
     _colorSensor.update();
     _Volt = _hallEffect.getVal();
-
+    //Serial.print(_Volt); //check voltage 
     _blockColor = _colorSensor.getColor();
     _blockDetected = _colorSensor.blockDetected();
 
