@@ -10,10 +10,8 @@ class ReceiveOrder {
 public:
   enum BlockColor : uint8_t { NONE, RED, YELLOW, BLUE};
 
-  static const uint8_t MAX_BLOCKS = 10;
+  static const uint8_t MAX_BLOCKS = 5;
 
-  // 8000 us is longer than a 300 Hz period (3333 us), but well below the
-  // 100 ms dark interval between symbols.
   ReceiveOrder(LTR_4206E_IR& ir, float toleranceHz = 55.0f)
       : _ir(ir), _tolerance(toleranceHz), _count(0), _sampleCode(NONE),
         _sameSamples(0), _pendingCode(NONE), _waitingForGap(false),
@@ -77,7 +75,7 @@ public:
   }
 
 private:
-  // Internal marker codes; they cannot be returned by block().
+  // Internal marker codes
   static const BlockColor START = static_cast<BlockColor>(5);
   static const BlockColor END   = static_cast<BlockColor>(6);
   static const BlockColor INVALID = static_cast<BlockColor>(7);

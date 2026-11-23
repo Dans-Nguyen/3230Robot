@@ -3,6 +3,8 @@ int LoopCases(int state){
   // LOOPING CASES
   switch(state){
     case 49:{ // get order
+      order.clear();
+
       if (order.update()) {
         activeOrderCount = order.count();
         
@@ -10,15 +12,8 @@ int LoopCases(int state){
         for (uint8_t i = 0; i < order.count(); i++) {
           activeOrder[i] = order.block(i); // store block color to activeOrder
           //Serial.println(activeOrder[i]);
-          if(activeOrder[i] == 1){
-            Serial.println("RED");
-          } else if(activeOrder[i] == 2){
-            Serial.println("YELLOW");
-          } else if(activeOrder[i] == 3){
-            Serial.println("BLUE");
-          }
         }
-        state = 999;
+        state = 50;
       }
 
     break;}

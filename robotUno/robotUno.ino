@@ -25,7 +25,7 @@ void setup() {
   hallEffect.begin();
   colorSensor.begin();
 
- Serial.println(F("UNO remote ready"));
+  Serial.println(F("UNO remote ready"));
 
 
 }
@@ -33,49 +33,32 @@ void setup() {
 
 void loop() {
 
-
-  // Set state directly from serial monitor. For debuggin purposes
+  // Set state directly from serial monitor. For debugging purposes
   if (Serial.available() > 0) {
-  int requestedState = Serial.parseInt();
+    int requestedState = Serial.parseInt();
 
-  // Remove the Enter characters left in the serial buffer
-  while (Serial.available() > 0) {
-    char c = Serial.peek();
-    if (c == '\n' || c == '\r') {
-      Serial.read();
-    } else {
-      break;
+    // Remove the Enter characters left in the serial buffer
+    while (Serial.available() > 0) {
+      char c = Serial.peek();
+      if (c == '\n' || c == '\r') {
+        Serial.read();
+      } else {
+        break;
+      }
     }
-  }
 
-  if (requestedState != 0) {
-    state = requestedState;
+    if (requestedState != 0) {
+      state = requestedState;
 
-    UnoXbee.write((uint8_t)255);   // start/header byte
-    UnoXbee.write((uint8_t)state); // raw one-byte state
+      UnoXbee.write((uint8_t)255);   // start/header byte
+      UnoXbee.write((uint8_t)state); // raw one-byte state
 
-    Serial.print(F("Sent to Percy: "));
-    Serial.println(state);
-  }
-}
+      Serial.print(F("Sent to Percy: "));
+      Serial.println(state);
+    }
+  } 
 
-  switch (state) {
+  state = TestCasesUno(state);
 
-    case 121 : { // Detect what color and if theres a magnet
-      detectBlock.update();
-      char blockColor = detectBlock.getColor();
-      bool isMagnet = detectBlock.isMagnet();
-  
-      Serial.print(blockColor);
-      Serial.println(isMagnet);
-
-      Serial.print("Color: ");
-      Serial.print(blockColor);
-      Serial.print(" | Magnet: ");
-      Serial.println(isMagnet);
-
-    break;}
-  
-  }
 }
 
