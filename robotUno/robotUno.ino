@@ -5,21 +5,24 @@
 
 // Automation classes
 #include "DetectBlock.h" // block color and magnet
-
-
+#include "SerialCommsUno.h"
 #include <SoftwareSerial.h>
-SoftwareSerial UnoXbee(2, 3);  // RX, TX
-MD_TCS3200 colorSensor(4, 5, 6, 7, 8,10); // (S0,S1,S2,S3, Out, LED)
+
+SoftwareSerial UnoXbee(2, 3);
+MD_TCS3200 colorSensor(4, 5, 6, 7, 8, 10);
 Hall_Effect hallEffect(A2);
 
 DetectBlock detectBlock(colorSensor, hallEffect);
+SerialCommsUno SerialUno(UnoXbee, 115200UL); // Must match Mega's Serial2 baud rate of 115200
 
-char command;
-int state = 0;
+int state = 0; // Internal state
+int stateSend = 0; // State sent to mega
+uint8_t activeOrder[SerialCommsUno::MAX_ARRAY_SIZE];
+
 
 void setup() {
   Serial.begin(57600); 
-  UnoXbee.begin(115200); // Must match Mega's Serial2 baud rate of 115200
+  SerialUno.begin(); 
 
   // Begin component objects
   hallEffect.begin();
@@ -27,38 +30,36 @@ void setup() {
 
   Serial.println(F("UNO remote ready"));
 
-
 }
 
 
 void loop() {
+  // Check for serial comm
+  SerialUno.update();
 
-  // Set state directly from serial monitor. For debugging purposes
+  if (SerialUno.stateAvailable) {
+    state = SerialUno.getState();
+  } else if (SerialUno.arrayAvailable){
+    const uint8_t* receivedOrder = SerialUno.getArray();
+
+    for (uint8_t i = 0; i < SerialCommsUno::MAX_ARRAY_SIZE; i++) {
+        activeOrder[i] = receivedOrder[i];
+    }
+  }
+
+  // Set state manually from Serial
   if (Serial.available() > 0) {
     int requestedState = Serial.parseInt();
 
-    // Remove the Enter characters left in the serial buffer
+    if (requestedState != 999) {
+        state = requestedState;
+    }
+
     while (Serial.available() > 0) {
-      char c = Serial.peek();
-      if (c == '\n' || c == '\r') {
         Serial.read();
-      } else {
-        break;
-      }
     }
-
-    if (requestedState != 0) {
-      state = requestedState;
-
-      UnoXbee.write((uint8_t)255);   // start/header byte
-      UnoXbee.write((uint8_t)state); // raw one-byte state
-
-      Serial.print(F("Sent to Percy: "));
-      Serial.println(state);
-    }
-  } 
+  }
+  //Serial.println(state);
 
   state = TestCasesUno(state);
-
 }
-

@@ -13,8 +13,14 @@ int TestCasesUno(int state){
       Serial.println(blockDetected);
 
     break;}
+
+    case 122: {
+      SerialUno.sendState((int)300);
+      state = 0;
+      break;
+    }
+    
   
   }
-  
   return state;
 }

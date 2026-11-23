@@ -18,6 +18,7 @@
 #include "automation/DriveTrajectory.h"
 #include "automation/RackTrajectory.h"
 #include "automation/WallFollow.h"
+#include "automation/SerialCommsMega.h"
 
 // Initialize PID objects
 PID lineFollowPID(100, 0, 10);  // PID object for line following
@@ -44,6 +45,7 @@ LTR_4206E_IR IR(25);
 ReceiveOrder order(IR, 10.0f);
 LimSwitch limSwitch(53);
 WallFollow wallFollow(distSensorR, drive, wallFollowPID);
+SerialCommsMega SerialMega(Serial2, 115200UL); // Must match uno's baud rate of 115200
 
 // Servo angle states
 float pickButtonState1 = 90;
@@ -97,7 +99,7 @@ bool blockProcessTiming = false;
 float rackSpeed = 15.0f; // rack speed in cm/s
 
 // Active order storage variable
-ReceiveOrder::BlockColor activeOrder[ReceiveOrder::MAX_BLOCKS];
+uint8_t activeOrder[ReceiveOrder::MAX_BLOCKS];
 uint8_t activeOrderCount = 0;
 
 // Initialize state variables
@@ -105,7 +107,7 @@ int state = 0;
 
 void setup() {
   Serial.begin(57600);      // for Serial Monitor messages
-  Serial2.begin(115200);    // communication with the XBee / Uno
+  SerialMega.begin();   
 
   // begin componenet objects
   drive.begin();
@@ -130,32 +132,39 @@ void setup() {
 }
 
 void loop() {
-  
-  // Check for uno command
-  if (Serial2.available() >= 2 && Serial2.read() == 255) {
-    state = Serial2.read();
+  // Check for serial comm
+  SerialMega.update();
+  // while (Serial2.available() > 0) {
+  //     int receivedByte = Serial2.read();
 
-    Serial.print(F("Mega received: "));
-    Serial.println(state);
+  //     Serial.print(F("Serial2 byte: "));
+  //     Serial.println(receivedByte);
+  // }
+  Serial.println(state);
+
+  if (SerialMega.stateAvailable) {
+    state = SerialMega.getState();
+  } else if (SerialMega.arrayAvailable){
+    const uint8_t* receivedOrder = SerialMega.getArray();
+
+    for (uint8_t i = 0; i < SerialCommsMega::MAX_ARRAY_SIZE; i++) {
+        activeOrder[i] = receivedOrder[i];
+    }
   }
+  
 
-  // Set state directly from serial monitor. For debugging purposes
+  // Set state manually from Serial
   if (Serial.available() > 0) {
     int requestedState = Serial.parseInt();
 
     if (requestedState != 999) {
-      state = requestedState;
-
-      Serial.print(F("State set to: "));
-      Serial.println(state);
+        state = requestedState;
     }
 
-    // Remove the newline / carriage-return left by Serial Monitor.
     while (Serial.available() > 0) {
-      Serial.read();
+        Serial.read();
     }
   }
-  //Serial.println(state);
 
   // LEAVING START AREA 0 - 3
   state = StartStates(state);

@@ -10,13 +10,16 @@ Features:
 #ifndef SERIAL_COMMS_H
 #define SERIAL_COMMS_H
 
-class SerialComms {
+#include <Arduino.h>
+#include <SoftwareSerial.h>
+
+class SerialCommsUno {
 public:
     static const uint8_t MAX_ARRAY_SIZE = 5;
     bool stateAvailable = false;
     bool arrayAvailable = false;
 
-    SerialComms(SoftwareSerial& serialPort, int baudRate)
+    SerialCommsUno(SoftwareSerial& serialPort, unsigned long baudRate)
     : _serialPort(serialPort), _baudRate(baudRate) {}
 
     void begin() {
@@ -24,13 +27,16 @@ public:
     }
 
     void sendState(int state){
-        _serialPort.write((uint8_t)_stateFlag);   // send start flag
-        _serialPort.write((uint16_t)state); // send state
+        _serialPort.write(_stateFlag);
+        _serialPort.write(lowByte(state));
+        _serialPort.write(highByte(state));
     }
 
     void sendArray(int array[MAX_ARRAY_SIZE]) {
         _serialPort.write(_arrayFlag); // send array flag
-        _serialPort.write(array, MAX_ARRAY_SIZE)
+        for (uint8_t i = 0; i < MAX_ARRAY_SIZE; i++) {
+            _serialPort.write((uint8_t)array[i]);
+        }
     }
 
     void update() {
@@ -77,7 +83,7 @@ public:
 
     const uint8_t* getArray(){
         arrayAvailable = false;
-        return &_newArray;
+        return _newArray;
     }
 
 private:
@@ -99,5 +105,7 @@ private:
     const uint8_t _stateFlag = 255;
     const uint8_t _arrayFlag = 254;
 
-    int _baudRate;
+    unsigned long _baudRate;
 };
+
+#endif
