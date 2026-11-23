@@ -5,72 +5,61 @@
 
 // Automation classes
 #include "DetectBlock.h" // block color and magnet
-
-
+#include "SerialCommsUno.h"
 #include <SoftwareSerial.h>
-SoftwareSerial UnoXbee(2, 3);  // RX, TX
-MD_TCS3200 colorSensor(4, 5, 6, 7, 8,10); // (S0,S1,S2,S3, Out, LED)
+
+SoftwareSerial UnoXbee(2, 3);
+MD_TCS3200 colorSensor(4, 5, 6, 7, 8, 10);
 Hall_Effect hallEffect(A2);
 
 DetectBlock detectBlock(colorSensor, hallEffect);
+SerialCommsUno SerialUno(UnoXbee, 115200UL); // Must match Mega's Serial2 baud rate of 115200
 
-char command;
-int state = 0;
+int state = 0; // Internal state
+int stateSend = 0; // State sent to mega
+uint8_t activeOrder[SerialCommsUno::MAX_ARRAY_SIZE];
+
 
 void setup() {
   Serial.begin(57600); 
-  UnoXbee.begin(115200); // Must match Mega's Serial2 baud rate of 115200
+  SerialUno.begin(); 
 
   // Begin component objects
   hallEffect.begin();
   colorSensor.begin();
 
- Serial.println(F("UNO remote ready"));
-
+  Serial.println(F("UNO remote ready"));
 
 }
 
 
 void loop() {
+  // Check for serial comm
+  SerialUno.update();
 
+  if (SerialUno.stateAvailable) {
+    state = SerialUno.getState();
+  } else if (SerialUno.arrayAvailable){
+    const uint8_t* receivedOrder = SerialUno.getArray();
 
-  // Set state directly from serial monitor. For debuggin purposes
-  if (Serial.available() > 0) {
-  int requestedState = Serial.parseInt();
-
-  // Remove the Enter characters left in the serial buffer
-  while (Serial.available() > 0) {
-    char c = Serial.peek();
-    if (c == '\n' || c == '\r') {
-      Serial.read();
-    } else {
-      break;
+    for (uint8_t i = 0; i < SerialCommsUno::MAX_ARRAY_SIZE; i++) {
+        activeOrder[i] = receivedOrder[i];
     }
   }
 
-  if (requestedState != 0) {
-    state = requestedState;
+  // Set state manually from Serial
+  if (Serial.available() > 0) {
+    int requestedState = Serial.parseInt();
 
-    UnoXbee.write((uint8_t)255);   // start/header byte
-    UnoXbee.write((uint8_t)state); // raw one-byte state
+    if (requestedState != 999) {
+        state = requestedState;
+    }
 
-    Serial.print(F("Sent to Percy: "));
-    Serial.println(state);
+    while (Serial.available() > 0) {
+        Serial.read();
+    }
   }
+  //Serial.println(state);
+
+  state = TestCasesUno(state);
 }
-
-  switch (state) {
-
-    case 121 : { // Detect what color and if theres a magnet
-      detectBlock.update();
-      char blockColor = detectBlock.getColor();
-      bool isMagnet = detectBlock.isMagnet();
-  
-      Serial.print(blockColor);
-      Serial.println(isMagnet);
-
-    break;}
-  
-  }
-}
-

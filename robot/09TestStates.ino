@@ -17,10 +17,7 @@ int TestStates(int state){
             Serial.println("YELLOW");
           } else if(activeOrder[i] == 3){
             Serial.println("BLUE");
-          } else if(activeOrder[i] == 4){
-            Serial.println("BROWN");
-          } 
-
+          }
 
         }
 

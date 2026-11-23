@@ -1,10 +1,6 @@
 #ifndef DETECT_BLOCK_H
 #define DETECT_BLOCK_H
 
-//#include "Hall_Effect.h" // Magnet
-//#include "MD_TCS_3200.h" // Color sensor class must come first
-
-
 class DetectBlock {
 public:
 
@@ -16,9 +12,10 @@ public:
     _Volt = _hallEffect.getVal();
     //Serial.print(_Volt); //check voltage 
     _blockColor = _colorSensor.getColor();
+    _blockDetected = _colorSensor.blockDetected();
 
     // Check if quiescent voltage is some value above or below 2.5V
-    if (_Volt >= 3.0f || _Volt <= 2.0f) {
+    if (_Volt >= 2.6f || _Volt <= 2.4f) {
       _isMagnet = true;
     } else {
       _isMagnet = false;
@@ -34,6 +31,10 @@ public:
     return _isMagnet;
   }
 
+  bool blockDetected() const {
+    return _blockDetected;
+  }
+
 private:
 MD_TCS3200& _colorSensor;
 Hall_Effect& _hallEffect;
@@ -41,6 +42,7 @@ Hall_Effect& _hallEffect;
 char _blockColor;
 float _Volt;
 bool _isMagnet;
+bool _blockDetected;
 
 };
 

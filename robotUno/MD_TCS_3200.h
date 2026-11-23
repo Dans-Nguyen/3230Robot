@@ -89,7 +89,8 @@ public:
     // Serial.println(_Cf, 2);
 
     if (_Cf <= 0 || _Cf >= 100) {
-      _blockColor = 'N';   // invalid/no reading
+      _blockColor = 0;   // invalid/no reading
+      _blockDetected = false;
       return;
     }
 
@@ -98,70 +99,36 @@ public:
     float GNorm = _Cf/_Gf * 100.0f;
     float BNorm = _Cf/_Bf * 100.0f;
 
-    //  Serial.print(RNorm, 2);
-    //  Serial.print(",\t");
-    //  Serial.print(GNorm, 2);
+    // Serial.print(RNorm, 2);
+    // Serial.print(",\t");
+    // Serial.print(GNorm, 2);
     // Serial.print(",\t");
     // Serial.println(BNorm, 2);
 
+    // new value that work with uno
     if (BNorm >= 20 && BNorm <= 26 &&
         RNorm  >= 55 && RNorm  <= 85 &&
         GNorm >= 14 && GNorm <= 22){
 
-      // Red block
-      _blockColor = 'R';
-
-    } else if (BNorm >= 45 && BNorm <= 54 &&
-               RNorm >= 15 && RNorm <= 22 &&
-               GNorm >= 30 && GNorm <= 32){
-                
-      // blue block
-      _blockColor = 'B';
-
-    } else if(BNorm >= 23 && BNorm <= 26 &&
-              RNorm >= 37 && RNorm <= 43 &&
-              GNorm >= 36 && GNorm <= 40){
-
-      // yellow block
-      _blockColor = 'Y';
-      
-
-    } else if(BNorm >= 27 && BNorm <= 28 &&
-              RNorm >= 39 && RNorm <= 40 &&
-              GNorm >= 28 && GNorm <= 30){
-
-      // light brown
-      _blockColor = 'K';
-              }else if (BNorm >= 28 && BNorm <= 31 &&
-              RNorm >= 32 && RNorm <= 37 &&
-              GNorm >= 31 && GNorm <= 32){
-      // dark brown
-      
-      _blockColor = 'K';
-    } 
-
-   
-  // CHANGE BINS --- recalibrate 
-/* if (BNorm >= 20 && BNorm <= 26 &&
-        RNorm  >= 55 && RNorm  <= 85 &&
-        GNorm >= 14 && GNorm <= 22){
-
       // Red block (widened ranges)
-      _blockColor = 'R';
+      _blockColor = 1;
+      _blockDetected = true;
 
     } else if (BNorm >= 38 && BNorm <= 62 &&
                RNorm >= 8  && RNorm <= 28 &&
                GNorm >= 18 && GNorm <= 36){
                 
       // Blue block
-      _blockColor = 'B';
+      _blockColor = 3;
+      _blockDetected = true;
 
     } else if(BNorm >= 18 && BNorm <= 28 &&
               RNorm >= 38 && RNorm <= 65 &&
               GNorm >= 28 && GNorm <= 42){
 
       // Yellow block
-      _blockColor = 'Y';
+      _blockColor = 2;
+      _blockDetected = true;
 
     }
     */
@@ -169,6 +136,10 @@ public:
 
   char getColor() const {
     return _blockColor;
+  }
+
+  bool blockDetected() const {
+    return _blockDetected;
   }
 
 private:
@@ -187,7 +158,10 @@ private:
   float _Cf;
 
   // Block Color
-  char _blockColor;
+  uint8_t _blockColor;
+
+  // Block detected
+  bool _blockDetected = false;
   
   const int _numSamples;
 };
