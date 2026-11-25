@@ -82,14 +82,14 @@ public:
     _Cf = averageFilter(HIGH, LOW);
 
     // Serial.print(_Rf, 2);
-    // Serial.print(",\t");
+    // Serial.print("\t");
     // Serial.print(_Gf, 2);
-    // Serial.print(",\t");
+    // Serial.print("\t");
     // Serial.print(_Bf, 2);
-    // Serial.print(",\t");
+    // Serial.print("\t");
     // Serial.println(_Cf, 2);
 
-    if (_Cf <= 0 || _Cf >= 100) {
+    if (_Cf <= 0 || _Cf >= 200) {
       _blockColor = 0;   // invalid/no reading
       _blockDetected = false;
       return;
@@ -107,25 +107,25 @@ public:
     // Serial.println(BNorm, 2);
 
     // new value that work with uno
-    if (BNorm >= 20 && BNorm <= 26 &&
-        RNorm  >= 55 && RNorm  <= 85 &&
-        GNorm >= 14 && GNorm <= 22){
+    if (BNorm >= 23 && BNorm <= 27 &&
+        RNorm  >= 39 && RNorm  <= 53 &&
+        GNorm >= 20 && GNorm <= 24){
 
       // Red block (widened ranges)
       _blockColor = 1;
       _blockDetected = true;
 
-    } else if (BNorm >= 38 && BNorm <= 62 &&
-               RNorm >= 8  && RNorm <= 28 &&
-               GNorm >= 18 && GNorm <= 36){
+    } else if (BNorm >= 45 && BNorm <= 54 &&
+               RNorm >= 18  && RNorm <= 23 &&
+               GNorm >= 31 && GNorm <= 34){
                 
       // Blue block
       _blockColor = 3;
       _blockDetected = true;
 
-    } else if(BNorm >= 18 && BNorm <= 28 &&
-              RNorm >= 38 && RNorm <= 65 &&
-              GNorm >= 28 && GNorm <= 42){
+    } else if(BNorm >= 22 && BNorm <= 25 &&
+              RNorm >= 33 && RNorm <= 40 &&
+              GNorm >= 33 && GNorm <= 38){
 
       // Yellow block
       _blockColor = 2;

@@ -29,10 +29,12 @@ int TestStates(int state){
     // 121 state for testing block detection
     case 121:{
       detectBlock.update();
-      char blockColor = detectBlock.getColor();
+      int blockColor = detectBlock.getColor();
       bool isMagnet = detectBlock.isMagnet();
+      bool blockDetected = detectBlock.blockDetected();
       Serial.print(blockColor);
-      Serial.println(isMagnet);
+      Serial.print(isMagnet);
+      Serial.println(blockDetected);
       
     break;}
 

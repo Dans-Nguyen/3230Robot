@@ -82,15 +82,15 @@ public:
     _Cf = averageFilter(HIGH, LOW);
 
     // Serial.print(_Rf, 2);
-    // Serial.print(",\t");
+    // Serial.print("\t");
     // Serial.print(_Gf, 2);
-    // Serial.print(",\t");
+    // Serial.print("\t");
     // Serial.print(_Bf, 2);
-    // Serial.print(",\t");
+    // Serial.print("\t");
     // Serial.println(_Cf, 2);
 
-    if (_Cf <= 0 || _Cf >= 100) {
-      _blockColor = 'N';   // invalid/no reading
+    if (_Cf <= 0 || _Cf >= 90) {
+      _blockColor = 0;   // invalid/no reading
       _blockDetected = false;
       return;
     }
@@ -106,28 +106,28 @@ public:
     // Serial.print(",\t");
     // Serial.println(BNorm, 2);
 
-    if (BNorm >= 20 && BNorm <= 25 &&
-        RNorm  >= 60 && RNorm  <= 80 &&
-        GNorm >= 15 && GNorm <= 20){
+    if (BNorm >= 20 && BNorm <= 27 &&
+        RNorm  >= 43 && RNorm  <= 80 &&
+        GNorm >= 15 && GNorm <= 25){
 
       // Red block
-      _blockColor = 'R';
+      _blockColor = 1;
       _blockDetected = true;
 
-    } else if (BNorm >= 40 && BNorm <= 60 &&
-               RNorm >= 10 && RNorm <= 25 &&
-               GNorm >= 20 && GNorm <= 34){
+    } else if (BNorm >= 35 && BNorm <= 60 &&
+               RNorm >= 16 && RNorm <= 33 &&
+               GNorm >= 23 && GNorm <= 32){
                 
       // blue block
-      _blockColor = 'B';
+      _blockColor = 3;
       _blockDetected = true;
 
-    } else if(BNorm >= 20 && BNorm <= 25 &&
-              RNorm >= 40 && RNorm <= 60 &&
-              GNorm >= 30 && GNorm <= 40){
+    } else if(BNorm >= 20 && BNorm <= 27 &&
+              RNorm >= 36 && RNorm <= 53 &&
+              GNorm >= 26 && GNorm <= 38){
 
       // yellow block
-      _blockColor = 'Y';
+      _blockColor = 2;
       _blockDetected = true;
 
     }
@@ -158,7 +158,7 @@ private:
   float _Cf;
 
   // Block Color
-  char _blockColor;
+  uint8_t _blockColor;
 
   // Block detected
   bool _blockDetected = false;

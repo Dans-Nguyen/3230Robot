@@ -3,7 +3,7 @@
 Encoder myEnc2(3, 22);
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(57600);
 }
 
 void loop() {

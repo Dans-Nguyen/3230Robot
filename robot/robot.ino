@@ -140,7 +140,7 @@ void loop() {
   //     Serial.print(F("Serial2 byte: "));
   //     Serial.println(receivedByte);
   // }
-  Serial.println(state);
+  //Serial.println(state);
 
   if (SerialMega.stateAvailable) {
     state = SerialMega.getState();
@@ -149,7 +149,11 @@ void loop() {
 
     for (uint8_t i = 0; i < SerialCommsMega::MAX_ARRAY_SIZE; i++) {
         activeOrder[i] = receivedOrder[i];
+        Serial.print(activeOrder[i]);
+        Serial.print("\t");
     }
+
+    Serial.println("");
   }
   
 

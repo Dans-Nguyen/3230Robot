@@ -39,12 +39,17 @@ void loop() {
 
   if (SerialUno.stateAvailable) {
     state = SerialUno.getState();
+
   } else if (SerialUno.arrayAvailable){
     const uint8_t* receivedOrder = SerialUno.getArray();
 
     for (uint8_t i = 0; i < SerialCommsUno::MAX_ARRAY_SIZE; i++) {
         activeOrder[i] = receivedOrder[i];
+        Serial.print(activeOrder[i]);
+        Serial.print("\t");
     }
+
+    Serial.println("");
   }
 
   // Set state manually from Serial
@@ -59,7 +64,6 @@ void loop() {
         Serial.read();
     }
   }
-  //Serial.println(state);
 
   state = TestCasesUno(state);
 }
