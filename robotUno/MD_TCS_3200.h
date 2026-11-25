@@ -30,7 +30,6 @@ colorSensor.begin();
 colorSensor.update();
 char color = colorSensor.getBlockColor();
 
-
 */
 
 #ifndef MD_TCS3200_H
@@ -132,6 +131,7 @@ public:
       _blockDetected = true;
 
     }
+    */
   }
 
   char getColor() const {
